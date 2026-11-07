@@ -436,8 +436,8 @@ async function maybeSeed() {
 }
 
 /* ---------- stocare: comună (db) sau doar pe telefon ---------- */
-const COLS = ['items', 'menu', 'dishes', 'queue', 'meta', 'photos', 'recipes', 'stores'];
-const S = { items: [], menu: [], dishes: [], queue: [], meta: [], photos: [], recipes: [], stores: [] };
+const COLS = ['items', 'menu', 'dishes', 'queue', 'meta', 'photos', 'recipes', 'stores', 'cereri'];
+const S = { items: [], menu: [], dishes: [], queue: [], meta: [], photos: [], recipes: [], stores: [], cereri: [] };
 let ASSETS = null;
 const Store = {
   mode: 'local', db: null, unsubs: [],
@@ -933,10 +933,20 @@ function recHero(r, big) {
 function viewRecipes() {
   let h = '<div class="top"><div class="t"><p class="date"><span>' + (S.recipes.length === 1 ? '1 rețetă salvată' : S.recipes.length + ' rețete salvate') + '</span>' + syncLabel() + '</p><h1>Rețete</h1></div>' +
     '<button class="me" data-a="who" aria-label="Schimbă persoana, acum ' + esc(PNAME[UI.me] || 'nimeni') + '">' + face(UI.me, 44) + '</button></div>';
+  h += '<div class="rbtns" style="margin:0 0 16px"><button class="btn-p" data-a="rnew">+ Rețetă nouă</button><button class="btn-s" style="border:1px solid var(--edge)" data-a="cnew">Trimite lui Claude</button></div>';
+  const pend = S.cereri.filter((c) => c.status !== 'gata').sort((a, b) => (a.at || 0) - (b.at || 0));
+  if (pend.length) {
+    h += '<p class="lbl">La Claude, așteaptă să fie scrise (' + pend.length + ')</p><div class="ring" style="margin-bottom:16px">' + pend.map((c) => {
+      const ph = c.photo ? photoSrc(c.photo) : '';
+      return '<div class="ri">' + (ph ? '<img class="ph s" src="' + esc(ph) + '" alt="">' : '<span class="emo s" style="background:var(--line)" aria-hidden="true">' + (c.photo ? '📝' : '🔗') + '</span>') +
+        '<span class="tx"><span style="overflow-wrap:anywhere">' + esc(c.url ? c.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 48) : 'Rețetă din poză') + '</span><small>' + esc((c.note ? c.note + ' · ' : '') + 'pus de ' + (PNAME[c.who] || 'cineva')) + '</small></span>' +
+        '<button class="rx" data-a="cdel" data-v="' + esc(c.id) + '" aria-label="Scoate cererea">×</button></div>';
+    }).join('') + '</div>';
+  }
   const list = S.recipes.filter((r) => !UI.rq || norm(r.name).includes(UI.rq) || (r.ingr || []).some((x) => norm(x.name).includes(UI.rq)))
     .sort((a, b) => (b.at || 0) - (a.at || 0));
   if (!S.recipes.length) {
-    h += '<div class="empty"><b>Nicio rețetă încă</b>Trimite-i lui Claude un link sau un clip cu o rețetă și o pune aici, scrisă frumos, cu ingredientele gata de pus în listă.</div>';
+    h += '<div class="empty"><b>Nicio rețetă încă</b>Scrie una de mână cu „Rețetă nouă” sau trimite-i lui Claude un link ori o poză cu rețeta scrisă pe hârtie.</div>';
   } else if (!list.length) {
     h += '<div class="empty"><b>N-am găsit</b>Nicio rețetă nu se potrivește cu ce ai scris.</div>';
   }
@@ -945,8 +955,41 @@ function viewRecipes() {
     h += '<button class="rcard" data-a="rec" data-v="' + esc(r.id) + '">' + recHero(r) + '<span class="rt"><b>' + esc(r.name) + '</b><span class="meta">' +
       (r.time ? '<span>' + esc(r.time) + '</span>' : '') + (r.servings ? '<span>' + esc(r.servingsText || (r.servings + ' porții')) + '</span>' : '') + '<span>' + n + ' ingrediente</span></span></span></button>';
   }
-  h += '<p class="hint" style="margin-top:12px">Ai găsit o rețetă pe net sau pe TikTok? Trimite linkul lui Claude și ți-o pune aici.</p>';
+  h += '<p class="hint" style="margin-top:12px">Ai găsit o rețetă pe net sau ai una scrisă pe hârtie? Apasă „Trimite lui Claude”, pune linkul sau fă-i poză, iar data viitoare când vorbești cu el zi-i „fă rețetele din aplicație”.</p>';
   return h;
+}
+function newRecipeSheet() {
+  openSheet('<h3>Rețetă nouă</h3><p class="sub">Scrie-o cum o știi. Ce lași gol nu e obligatoriu.</p>' +
+    '<label class="field"><span>Numele</span><input class="inp" id="rn" maxlength="70" placeholder="de exemplu, sarmale ca la mama"></label>' +
+    '<div class="srow" style="margin-bottom:16px"><label class="field" style="flex:1;margin:0"><span>Porții</span><input class="inp" id="rp" inputmode="numeric" value="4"></label><label class="field" style="flex:2;margin:0"><span>Cât durează</span><input class="inp" id="rt" placeholder="de exemplu, 1 h 30 min"></label></div>' +
+    '<label class="field"><span>Link (dacă e de pe net)</span><input class="inp" id="rl" type="url" autocapitalize="off" placeholder="https://"></label>' +
+    '<div class="field"><span>Ingrediente</span><div id="rilist"></div><input class="inp" id="riadd" placeholder="Scrie un ingredient, de exemplu varză" autocomplete="off"></div><div id="risugg"></div>' +
+    '<label class="field"><span>Cum se face (fiecare pas pe un rând nou)</span><textarea class="inp" id="rs" rows="7" style="height:auto;padding:12px 14px;line-height:1.5;resize:vertical" placeholder="Călești ceapa\nAdaugi carnea\n…"></textarea></label>' +
+    '<div class="photo"><span class="ph-empty" id="rphprev" style="background:var(--line)" aria-hidden="true">🍲</span><div><label><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Poză cu mâncarea<input type="file" accept="image/*" id="rph"></label><small>Opțional, apare sus la rețetă.</small></div></div>' +
+    '<div class="acts"><button class="btn-s" data-a="close">Renunță</button><button class="btn-p" data-a="rsave">Salvează rețeta</button></div>', { ingr: [], blob: null });
+  drawNewIngr();
+  $('#riadd').addEventListener('input', () => {
+    const v = norm($('#riadd').value); if (!v) { $('#risugg').innerHTML = ''; return; }
+    const hits = searchCatalog(v, 5); const raw = $('#riadd').value.trim();
+    let h = '<div class="sbox" style="box-shadow:none;margin:-6px 0 14px">' + hits.map((x) => '<button class="sopt" data-a="rnpick" data-v="' + esc(x.name) + '">' + thumb(x, true) + '<span class="nm">' + esc(x.name) + '</span></button>').join('');
+    if (!hits.some((x) => norm(x.name) === v)) h += '<button class="sopt" data-a="rnpick" data-v="' + esc(raw) + '">' + thumb({ name: '', cat: 'alt' }, true) + '<span class="nm">Adaugă „' + esc(raw) + '”</span></button>';
+    $('#risugg').innerHTML = h + '</div>';
+  });
+  $('#riadd').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); const v = $('#riadd').value.trim(); if (v) A.rnpick(v); } });
+  $('#rph').addEventListener('change', async (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; try { const b = await shrink(f); sheetCtx.blob = b; const n = document.createElement('img'); n.src = URL.createObjectURL(b); n.alt = ''; $('#rphprev').replaceWith(n); } catch (er) { toast('Nu am putut citi poza'); } });
+}
+function drawNewIngr() {
+  const c = sheetCtx;
+  $('#rilist').innerHTML = c.ingr.map((x, i) => '<div class="ingr">' + thumb(x, true) + '<span class="nm">' + esc(x.name) + '</span><input class="inp" data-ri="' + i + '" style="height:40px;width:110px;flex:none;font-size:14px;padding:0 10px" placeholder="cât? 500 g" value="' + esc(x.say) + '"><button class="x" data-a="rndel" data-v="' + i + '" aria-label="Scoate ' + esc(x.name) + '">×</button></div>').join('');
+  $('#rilist').querySelectorAll('input[data-ri]').forEach((el) => el.addEventListener('input', () => { c.ingr[Number(el.dataset.ri)].say = el.value; }));
+}
+function cerereSheet() {
+  openSheet('<h3>Trimite lui Claude</h3><p class="sub">Pune linkul de pe net sau fă poză la rețeta scrisă pe hârtie. Rămâne aici până îi zici lui Claude „fă rețetele din aplicație”.</p>' +
+    '<label class="field"><span>Link</span><input class="inp" id="cl" type="url" autocapitalize="off" placeholder="https:// (site, TikTok, YouTube, Facebook)"></label>' +
+    '<div class="photo" style="margin-bottom:12px"><div><label><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Poză cu rețeta<input type="file" accept="image/*" multiple id="cph"></label><small id="cphn">Poți pune mai multe poze, dacă rețeta e pe mai multe pagini.</small></div></div>' +
+    '<label class="field"><span>Notiță pentru Claude (opțional)</span><input class="inp" id="cn" maxlength="120" placeholder="de exemplu, fără ardei iute, pentru 4 persoane"></label>' +
+    '<div class="acts"><button class="btn-s" data-a="close">Renunță</button><button class="btn-p" id="cgo" data-a="csave">Trimite</button></div>', { files: [] });
+  $('#cph').addEventListener('change', (e) => { sheetCtx.files = Array.from(e.target.files || []); $('#cphn').textContent = sheetCtx.files.length ? (sheetCtx.files.length === 1 ? '1 poză aleasă' : sheetCtx.files.length + ' poze alese') : 'Nicio poză aleasă'; });
 }
 function recipeSheet(id) {
   const r = S.recipes.find((x) => x.id === id); if (!r) return;
@@ -961,11 +1004,13 @@ function drawRecipe() {
   if (r.source && r.source.url) h += '<a class="srcbtn" href="' + esc(r.source.url) + '" target="_blank" rel="noopener">Deschide rețeta originală (' + esc(r.source.title || 'link') + ') ↗</a>';
   if (r.intro) h += '<p class="intro">' + esc(r.intro) + '</p>';
   h += '<div class="rbtns"><button class="btn-p" data-a="rlist">Pune în listă</button><button class="btn-s" style="border:1px solid var(--edge)" data-a="rmenu">Pune în meniu</button></div>';
-  h += '<div style="display:flex;align-items:center;justify-content:space-between"><p class="sec">Ingrediente</p><button class="linkbtn" data-a="redit">' + (c.edit ? 'Gata' : 'Modifică') + '</button></div>';
-  if (c.edit) h += '<p class="hint" style="margin-top:-4px">Apasă pe × la ce nu vrei în rețetă. Ce scoți rămâne jos, la „Scoase”, și îl poți pune înapoi.</p>';
+  h += '<div style="display:flex;align-items:center;justify-content:space-between"><p class="sec">Ingrediente</p><button class="chip' + (c.edit ? '' : ' soft') + '" style="' + (c.edit ? 'background:var(--accent);color:#fff' : '') + '" data-a="redit">' + (c.edit ? 'Gata, am terminat' : '✎ Scoate sau adaugă') + '</button></div>';
+  if (c.edit) h += '<p class="hint" style="margin-top:-4px">Apasă pe − la ce nu vrei în rețetă. Te întreb încă o dată înainte să-l scot, iar ce scoți rămâne jos, la „Scoase din rețetă”, de unde îl pui înapoi.</p>';
   if (r.yieldText) h += '<div class="tips" style="margin-bottom:10px"><p><b>Cât iese rețeta originală:</b> ' + esc(r.yieldText) + '</p></div>';
   if (r.servings) h += '<div class="portii"><span>Pentru câte porții</span><button data-a="rminus" aria-label="Mai puține porții">−</button><b>' + c.serv + '</b><button data-a="rplus" aria-label="Mai multe porții">+</button></div>';
-  const delb = (key, nm) => c.edit ? '<button class="rx" data-a="rdel" data-v="' + key + '" aria-label="Scoate ' + esc(nm) + ' din rețetă">×</button>' : '';
+  const delb = (key, nm) => !c.edit ? '' : (c.confirm === key
+    ? '<span style="display:flex;gap:6px;flex:none"><button class="rx" style="width:auto;padding:0 12px;background:var(--danger);color:#fff;font-size:14px;font-weight:600" data-a="rdel" data-v="' + key + '">Scoate</button><button class="rx" style="width:auto;padding:0 12px;background:var(--line);color:var(--ink);font-size:14px;font-weight:600" data-a="rno">Nu</button></span>'
+    : '<button class="rx" data-a="rask" data-v="' + key + '" aria-label="Scoate ' + esc(nm) + ' din rețetă">−</button>');
   h += '<div class="ring">' + (r.ingr || []).map((x, i) => '<div class="ri">' + thumb(x, true) + '<span class="tx"><span>' + esc(x.name) + '</span>' + (x.note ? '<small>' + esc(x.note) + '</small>' : '') + '</span><span class="am">' + esc(scaleText(x.say, k)) + '</span>' + delb('i:' + i, x.name) + '</div>').join('') + '</div>';
   if (c.edit) h += '<div class="srow" style="margin-top:10px"><input class="inp" id="radd" placeholder="Adaugă un ingredient" autocomplete="off"><button class="btn-p" style="height:52px;border:0;border-radius:16px;padding:0 18px;font-weight:600" data-a="raddb">Adaugă</button></div>';
   if (r.serve && r.serve.length) h += '<p class="sec" style="font-size:17px">La servit</p><div class="ring">' + r.serve.map((x, i) => '<div class="ri">' + thumb(x, true) + '<span class="tx"><span>' + esc(x.name) + '</span></span><span class="am">' + esc(scaleText(x.say, k)) + '</span>' + delb('s:' + i, x.name) + '</div>').join('') + '</div>';
@@ -1127,6 +1172,8 @@ const A = {
     Store.del('queue', c.id); closeSheet(); toast(c.name + ' e în meniu');
   },
   qdel() { Store.del('queue', sheetCtx.id); closeSheet(); },
+  rask(v) { sheetCtx.confirm = v; drawRecipe(); hookRadd(); },
+  rno() { sheetCtx.confirm = null; drawRecipe(); hookRadd(); },
   redit() { sheetCtx.edit = !sheetCtx.edit; drawRecipe(); hookRadd(); },
   rdel(v) {
     const r = S.recipes.find((x) => x.id === sheetCtx.id); if (!r) return;
@@ -1134,7 +1181,7 @@ const A = {
     const [kind, idx] = v.split(':'); const arr = kind === 'i' ? nr.ingr : nr.serve;
     const [gone] = arr.splice(Number(idx), 1); gone.from = kind;
     (nr.removed = nr.removed || []).push(gone);
-    saveRecipe(r.id, nr); toast(gone.name + ' a fost scos din rețetă');
+    sheetCtx.confirm = null; saveRecipe(r.id, nr); toast(gone.name + ' a fost scos din rețetă');
   },
   rback(v) {
     const r = S.recipes.find((x) => x.id === sheetCtx.id); if (!r) return;
@@ -1150,6 +1197,43 @@ const A = {
     nr.ingr.push({ name: k ? k.name : nm, say: '', qty: 1, unit: k ? k.unit : 'buc', cat: k ? k.cat : 'alt' });
     saveRecipe(r.id, nr); toast(nm + ' e în rețetă');
   },
+  rnew() { newRecipeSheet(); },
+  rnpick(v) {
+    const k = findCat(v); sheetCtx.ingr.push({ name: k ? k.name : v, say: '', qty: 1, unit: k ? k.unit : 'buc', cat: k ? k.cat : 'alt' });
+    $('#riadd').value = ''; $('#risugg').innerHTML = ''; drawNewIngr(); $('#riadd').focus();
+  },
+  rndel(v) { sheetCtx.ingr.splice(Number(v), 1); drawNewIngr(); },
+  async rsave() {
+    const c = sheetCtx; const name = ($('#rn').value || '').trim();
+    if (!name) { toast('Scrie numele rețetei'); return; }
+    let id = slug(name); let n = 2; while (S.recipes.some((r) => r.id === id)) id = slug(name) + '-' + (n++);
+    const steps = ($('#rs').value || '').split('\n').map((x) => x.trim()).filter(Boolean).map((d) => ({ t: '', d: d }));
+    const url = ($('#rl').value || '').trim();
+    const rec = { name: name, emoji: emojiFor(name, 'alt') === '🛒' ? '🍲' : emojiFor(name, 'alt'), bg: '#F2E6D5', servings: Math.max(1, parseInt($('#rp').value, 10) || 4), time: ($('#rt').value || '').trim(),
+      ingr: c.ingr, steps: steps, by: UI.me || '', at: Date.now() };
+    if (url) rec.source = { title: url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0], url: url };
+    const blob = c.blob;
+    closeSheet();
+    if (blob && GH.token) { try { const r = await putPhoto(name, blob); rec.photo = r.src; } catch (e) { toast('Poza nu s-a urcat, rețeta da'); } }
+    saveRecipe(id, rec); toast(name + ' e în rețete');
+  },
+  cnew() { cerereSheet(); },
+  async csave() {
+    const c = sheetCtx; const url = ($('#cl').value || '').trim(); const note = ($('#cn').value || '').trim();
+    if (!url && !c.files.length) { toast('Pune un link sau o poză'); return; }
+    if (url && !/^https?:\/\//i.test(url)) { toast('Linkul trebuie să înceapă cu https://'); return; }
+    $('#cgo').disabled = true; $('#cgo').textContent = 'Trimit…';
+    const files = c.files; const batch = rid();
+    try {
+      if (url) await Store.set('cereri', rid(), { url: url, note: note, who: UI.me || '', status: 'nou', at: Date.now(), batch: batch });
+      for (let i = 0; i < files.length; i++) {
+        const b = await shrink(files[i]); const r = await putPhoto('reteta-' + batch + '-' + (i + 1), b);
+        await Store.set('cereri', rid(), { photo: r.src, note: note + (files.length > 1 ? ' (pagina ' + (i + 1) + ' din ' + files.length + ')' : ''), who: UI.me || '', status: 'nou', at: Date.now() + i, batch: batch });
+      }
+      closeSheet(); toast('Gata, așteaptă la Claude');
+    } catch (e) { $('#cgo').disabled = false; $('#cgo').textContent = 'Trimite'; toast('Nu s-a trimis, mai încearcă'); }
+  },
+  cdel(v) { Store.del('cereri', v); },
   rec(v) { if (sheetOpen) { sheetOpen = false; } recipeSheet(v); },
   rplus() { sheetCtx.serv = Math.min(60, sheetCtx.serv + 1); drawRecipe(); },
   rminus() { sheetCtx.serv = Math.max(1, sheetCtx.serv - 1); drawRecipe(); },
