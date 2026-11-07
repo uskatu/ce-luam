@@ -201,6 +201,8 @@ h1{margin:0;font-family:var(--display);font-size:42px;line-height:1;font-weight:
 .steps li div strong{display:block;font-size:16px;margin-bottom:2px}
 .tips{background:var(--soft);color:var(--soft-ink);border-radius:18px;padding:14px 16px;font-size:15px;line-height:1.55}
 .tips p{margin:0 0 8px}.tips p:last-child{margin:0}
+.srcbtn{display:flex;align-items:center;justify-content:center;min-height:48px;margin:14px 0 4px;border-radius:24px;border:1px solid var(--edge);background:var(--card);color:var(--accent);font-weight:600;font-size:15px;text-decoration:none;padding:0 16px;text-align:center}
+.rx{width:40px;height:40px;border:0;border-radius:12px;background:#F5DEDA;color:var(--danger);font-size:20px;flex:none}
 .src{display:block;margin:16px 4px 4px;font-size:14px;color:var(--accent);font-weight:600;text-decoration:none;padding:8px 0}
 .rbtns{display:flex;gap:10px;margin:14px 0 4px}
 .rbtns button{flex:1;height:52px;border-radius:26px;border:0;font-size:15px;font-weight:600}
@@ -405,6 +407,22 @@ async function writeCol(c, mutate, msg) {
   }
   throw new Error('conflict');
 }
+async function applyInbox() {
+  let box = null;
+  try { const r = await fetch('inbox.json?' + Date.now(), { cache: 'no-store' }); if (r.ok) box = await r.json(); } catch (e) {}
+  if (!box || !Array.isArray(box.entries)) return;
+  const metaDoc = S.meta.find((m) => m.id === 'inbox') || {};
+  const done = Object.assign({}, metaDoc.done || {});
+  let changed = false;
+  for (const e of box.entries) {
+    if (!e || !e.key || done[e.key] || !S[e.col]) continue;
+    const cur = S[e.col].find((x) => x.id === e.id);
+    const data = e.op === 'merge' && cur ? Object.assign(strip(cur), e.data) : e.data;
+    await Store.set(e.col, e.id, data);
+    done[e.key] = Date.now(); changed = true;
+  }
+  if (changed) await Store.set('meta', 'inbox', { done: done });
+}
 async function maybeSeed() {
   const probe = await readCol('recipes');
   if (!probe.missing) return;
@@ -441,6 +459,7 @@ const Store = {
     try {
       await maybeSeed();
       await this.pull(true);
+      await applyInbox();
     } catch (e) { syncState = 'off'; render(); }
     setInterval(() => { if (document.visibilityState === 'visible') this.pull(false); }, 20000);
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') this.pull(false); });
@@ -931,7 +950,7 @@ function viewRecipes() {
 }
 function recipeSheet(id) {
   const r = S.recipes.find((x) => x.id === id); if (!r) return;
-  const ctx = { id: id, serv: r.servings || 4 };
+  const ctx = { id: id, serv: r.servings || 4, edit: false };
   openSheet('<div id="rbody"></div>', ctx);
   drawRecipe();
 }
@@ -939,16 +958,30 @@ function drawRecipe() {
   const c = sheetCtx; const r = S.recipes.find((x) => x.id === c.id); if (!r) return;
   const k = r.servings ? c.serv / r.servings : 1;
   let h = recHero(r, true) + '<h3>' + esc(r.name) + '</h3><div class="meta" style="margin-top:8px">' + (r.time ? '<span>' + esc(r.time) + '</span>' : '') + (r.region ? '<span>' + esc(r.region) + '</span>' : '') + '</div>';
+  if (r.source && r.source.url) h += '<a class="srcbtn" href="' + esc(r.source.url) + '" target="_blank" rel="noopener">Deschide rețeta originală (' + esc(r.source.title || 'link') + ') ↗</a>';
   if (r.intro) h += '<p class="intro">' + esc(r.intro) + '</p>';
   h += '<div class="rbtns"><button class="btn-p" data-a="rlist">Pune în listă</button><button class="btn-s" style="border:1px solid var(--edge)" data-a="rmenu">Pune în meniu</button></div>';
-  h += '<p class="sec">Ingrediente</p>';
+  h += '<div style="display:flex;align-items:center;justify-content:space-between"><p class="sec">Ingrediente</p><button class="linkbtn" data-a="redit">' + (c.edit ? 'Gata' : 'Modifică') + '</button></div>';
+  if (c.edit) h += '<p class="hint" style="margin-top:-4px">Apasă pe × la ce nu vrei în rețetă. Ce scoți rămâne jos, la „Scoase”, și îl poți pune înapoi.</p>';
+  if (r.yieldText) h += '<div class="tips" style="margin-bottom:10px"><p><b>Cât iese rețeta originală:</b> ' + esc(r.yieldText) + '</p></div>';
   if (r.servings) h += '<div class="portii"><span>Pentru câte porții</span><button data-a="rminus" aria-label="Mai puține porții">−</button><b>' + c.serv + '</b><button data-a="rplus" aria-label="Mai multe porții">+</button></div>';
-  h += '<div class="ring">' + (r.ingr || []).map((x) => '<div class="ri">' + thumb(x, true) + '<span class="tx"><span>' + esc(x.name) + '</span>' + (x.note ? '<small>' + esc(x.note) + '</small>' : '') + '</span><span class="am">' + esc(scaleText(x.say, k)) + '</span></div>').join('') + '</div>';
-  if (r.serve && r.serve.length) h += '<p class="sec" style="font-size:17px">La servit</p><div class="ring">' + r.serve.map((x) => '<div class="ri">' + thumb(x, true) + '<span class="tx"><span>' + esc(x.name) + '</span></span><span class="am">' + esc(scaleText(x.say, k)) + '</span></div>').join('') + '</div>';
+  const delb = (key, nm) => c.edit ? '<button class="rx" data-a="rdel" data-v="' + key + '" aria-label="Scoate ' + esc(nm) + ' din rețetă">×</button>' : '';
+  h += '<div class="ring">' + (r.ingr || []).map((x, i) => '<div class="ri">' + thumb(x, true) + '<span class="tx"><span>' + esc(x.name) + '</span>' + (x.note ? '<small>' + esc(x.note) + '</small>' : '') + '</span><span class="am">' + esc(scaleText(x.say, k)) + '</span>' + delb('i:' + i, x.name) + '</div>').join('') + '</div>';
+  if (c.edit) h += '<div class="srow" style="margin-top:10px"><input class="inp" id="radd" placeholder="Adaugă un ingredient" autocomplete="off"><button class="btn-p" style="height:52px;border:0;border-radius:16px;padding:0 18px;font-weight:600" data-a="raddb">Adaugă</button></div>';
+  if (r.serve && r.serve.length) h += '<p class="sec" style="font-size:17px">La servit</p><div class="ring">' + r.serve.map((x, i) => '<div class="ri">' + thumb(x, true) + '<span class="tx"><span>' + esc(x.name) + '</span></span><span class="am">' + esc(scaleText(x.say, k)) + '</span>' + delb('s:' + i, x.name) + '</div>').join('') + '</div>';
+  if (r.removed && r.removed.length) h += '<p class="sec" style="font-size:17px">Scoase din rețetă</p><div class="ring">' + r.removed.map((x, i) => '<div class="ri" style="opacity:.6">' + thumb(x, true) + '<span class="tx"><span style="text-decoration:line-through">' + esc(x.name) + '</span></span><button class="linkbtn" data-a="rback" data-v="' + i + '">Pune înapoi</button></div>').join('') + '</div>';
   h += '<p class="sec">Cum se face</p><ol class="steps">' + (r.steps || []).map((s, i) => '<li><b>' + (i + 1) + '</b><div>' + (s.t ? '<strong>' + esc(s.t) + '</strong>' : '') + esc(s.d || s) + '</div></li>').join('') + '</ol>';
   if (r.tips && r.tips.length) h += '<p class="sec">Sfaturi</p><div class="tips">' + r.tips.map((t) => '<p>' + esc(t) + '</p>').join('') + '</div>';
   if (r.source && r.source.url) h += '<a class="src" href="' + esc(r.source.url) + '" target="_blank" rel="noopener">Rețeta originală: ' + esc(r.source.title || r.source.url) + ' ↗</a>';
   $('#rbody').innerHTML = h;
+}
+function hookRadd() { const ra = $('#radd'); if (ra) ra.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); A.raddb(); } }); }
+function saveRecipe(id, nr) {
+  Store.set('recipes', id, nr);
+  const ingr = (nr.ingr || []).concat(nr.serve || []).filter((x) => x.qty).map((x) => ({ name: x.name, qty: x.qty, unit: x.unit, cat: x.cat || 'alt' }));
+  const d = S.dishes.find((x) => x.id === id);
+  Store.set('dishes', id, Object.assign({}, d ? strip(d) : {}, { name: nr.name, ingr: ingr }));
+  if (sheetOpen && sheetCtx && sheetCtx.id === id) { drawRecipe(); hookRadd(); }
 }
 function recShopList(r, k) {
   return (r.ingr || []).concat(r.serve || []).filter((x) => x.qty).map((x) => {
@@ -1094,6 +1127,29 @@ const A = {
     Store.del('queue', c.id); closeSheet(); toast(c.name + ' e în meniu');
   },
   qdel() { Store.del('queue', sheetCtx.id); closeSheet(); },
+  redit() { sheetCtx.edit = !sheetCtx.edit; drawRecipe(); hookRadd(); },
+  rdel(v) {
+    const r = S.recipes.find((x) => x.id === sheetCtx.id); if (!r) return;
+    const nr = JSON.parse(JSON.stringify(strip(r)));
+    const [kind, idx] = v.split(':'); const arr = kind === 'i' ? nr.ingr : nr.serve;
+    const [gone] = arr.splice(Number(idx), 1); gone.from = kind;
+    (nr.removed = nr.removed || []).push(gone);
+    saveRecipe(r.id, nr); toast(gone.name + ' a fost scos din rețetă');
+  },
+  rback(v) {
+    const r = S.recipes.find((x) => x.id === sheetCtx.id); if (!r) return;
+    const nr = JSON.parse(JSON.stringify(strip(r)));
+    const [back] = nr.removed.splice(Number(v), 1);
+    const to = back.from === 's' ? (nr.serve = nr.serve || []) : nr.ingr; delete back.from; to.push(back);
+    saveRecipe(r.id, nr); toast(back.name + ' e înapoi în rețetă');
+  },
+  raddb() {
+    const ra = $('#radd'); const nm = ra ? ra.value.trim() : ''; if (!nm) return;
+    const r = S.recipes.find((x) => x.id === sheetCtx.id); if (!r) return;
+    const nr = JSON.parse(JSON.stringify(strip(r))); const k = findCat(nm);
+    nr.ingr.push({ name: k ? k.name : nm, say: '', qty: 1, unit: k ? k.unit : 'buc', cat: k ? k.cat : 'alt' });
+    saveRecipe(r.id, nr); toast(nm + ' e în rețetă');
+  },
   rec(v) { if (sheetOpen) { sheetOpen = false; } recipeSheet(v); },
   rplus() { sheetCtx.serv = Math.min(60, sheetCtx.serv + 1); drawRecipe(); },
   rminus() { sheetCtx.serv = Math.max(1, sheetCtx.serv - 1); drawRecipe(); },

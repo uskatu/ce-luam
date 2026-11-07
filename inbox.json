@@ -1,0 +1,15 @@
+{
+ "_info": "Ce scrie Claude aici intră o singură dată în aplicație (rețete noi, modificări).",
+ "entries": [
+  {
+   "key": "2026-11-07-gulas-cantitate",
+   "col": "recipes",
+   "id": "gulas-de-vita-cu-cartofi",
+   "op": "merge",
+   "data": {
+    "yieldText": "un ceaun de 11 litri, cu 2,5 kg de carne de vită și 2,5 kg de cartofi, cam 15-20 de porții. Am pus 16 porții ca punct de plecare, iar mai jos schimbi pentru câți gătești și se recalculează tot.",
+    "servingsText": "15-20 porții, ceaun 11 L"
+   }
+  }
+ ]
+}
