@@ -1080,8 +1080,13 @@ const A = {
   store(v) { UI.store = v; ls.set('store', v); render(); },
   who() { A.who2(); const af = $('#afile'); if (af) af.addEventListener('change', async (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; try { toast('Urc poza…'); const b = await shrinkSq(f); const r = await putPhoto('avatar-' + UI.me, b); const cur = (S.meta.find((m) => m.id === 'avatare') || {}); const nv = Object.assign({}, strip(cur)); nv[UI.me] = r.src; await Store.set('meta', 'avatare', nv); closeSheet(); render(); toast('Gata, ai poză'); } catch (er) { toast('Nu am putut urca poza'); } }); },
   who2() { openSheet('<h3>Cine ești?</h3><p class="sub">Alege-te pe tine, ca să apară lângă ce pui în listă.</p><div class="people">' + PEOPLE.map((p) => '<button class="person" data-a="setme" data-v="' + p.id + '"><i>' + face(p.id, 36) + '</i>' + p.name + '</button>').join('') + '</div>' +
-    (UI.me && GH.token ? '<label class="chip soft" style="position:relative;display:inline-flex;align-items:center;margin-top:14px;cursor:pointer">Pune-ți poza de profil<input type="file" accept="image/*" id="afile" style="position:absolute;width:1px;height:1px;opacity:0"></label>' : '') + (GH.token ? '<button class="linkbtn" style="margin-top:12px;color:var(--danger)" data-a="forget">Scoate cheia de pe telefonul ăsta</button>' : '')); },
+    (UI.me && GH.token ? '<label class="chip soft" style="position:relative;display:inline-flex;align-items:center;margin-top:14px;cursor:pointer">Pune-ți poza de profil<input type="file" accept="image/*" id="afile" style="position:absolute;width:1px;height:1px;opacity:0"></label>' : '') + (GH.token ? '<div style="margin-top:18px;padding:14px 16px;border-radius:18px;background:var(--card)"><b style="display:block;margin-bottom:4px">Pune aplicația pe alt telefon</b><span style="font-size:14px;color:var(--muted);line-height:1.45;display:block;margin-bottom:10px">Trimite cheia familiei prin AirDrop sau mesaj direct Marinelei ori Denisei. Ele deschid aplicația, o lipesc și gata. Nu o pune pe grupuri.</span><button class="btn-p" style="height:48px;border:0;border-radius:24px;padding:0 18px;font-weight:600" data-a="sharekey">Trimite cheia</button></div>' : '') + (GH.token ? '<button class="linkbtn" style="margin-top:12px;color:var(--danger)" data-a="forget">Scoate cheia de pe telefonul ăsta</button>' : '')); },
   forget0() {},
+  async sharekey() {
+    const k = GH.token; if (!k) return;
+    try { if (navigator.share) { await navigator.share({ text: k }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+    try { await navigator.clipboard.writeText(k); toast('Am copiat cheia, acum lipește-o în mesaj'); } catch (e) { toast('Nu am putut copia cheia'); }
+  },
   forget() { ls.set('ghtoken', ''); location.reload(); },
   async savekey() {
     const k = ($('#gkey').value || '').trim();
