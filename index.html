@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ce luăm?">
+<meta name="theme-color" content="#F3F4EF">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Ce luăm?</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F4EF; --card:#FFFFFF; --ink:#161A17; --muted:#5D645F; --line:#ECEEE8; --edge:#D5D9D1;
+  --accent:#1F6F4A; --accent-ink:#16573A; --soft:#E4EDE6; --soft-ink:#1F4D35; --danger:#A3352A;
+  --display:'Bricolage Grotesque', Geist, system-ui, sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Geist, system-ui, -apple-system, sans-serif;font-size:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+input{font:inherit;color:inherit}
+.app{max-width:520px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top) + 26px) 18px calc(env(safe-area-inset-bottom) + 140px)}
+.top{display:flex;align-items:flex-end;gap:10px;padding:0 4px;margin-bottom:18px}
+.top .t{flex:1;display:flex;flex-direction:column;gap:6px}
+.date{margin:0;font-size:13px;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:4px 8px;flex-wrap:wrap}
+.sync{white-space:nowrap;display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+.sync i{width:7px;height:7px;border-radius:9px;background:#B8BEB9;display:inline-block}
+.sync.on i{background:var(--accent)}
+h1{margin:0;font-family:var(--display);font-size:42px;line-height:1;font-weight:700;letter-spacing:-.02em}
+.me{width:44px;height:44px;border-radius:99px;border:0;background:var(--card);font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center}
+.pills{display:flex;gap:8px;margin-bottom:16px}
+.pill{height:44px;padding:0 20px;border-radius:99px;border:1px solid var(--edge);background:transparent;font-size:15px;font-weight:500}
+.pill.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600}
+.go{display:flex;align-items:center;gap:14px;padding:16px 16px 16px 20px;border-radius:22px;background:var(--accent);color:#fff;margin-bottom:18px}
+.go .c{flex:1;display:flex;flex-direction:column;gap:2px}
+.go small{font-size:13px;opacity:.85}
+.go b{font-family:var(--display);font-size:22px;font-weight:700}
+.go button{height:44px;padding:0 18px;border-radius:99px;border:0;background:#fff;color:var(--accent);font-size:15px;font-weight:600;white-space:nowrap}
+.banner{padding:14px 16px;border-radius:18px;background:var(--soft);color:var(--soft-ink);font-size:15px;line-height:1.4;margin-bottom:16px}
+.lbl{margin:0 4px 10px;font-size:13px;font-weight:600;color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{height:40px;padding:0 14px;border-radius:99px;border:0;background:var(--card);font-size:14px;font-weight:500}
+.chip.soft{background:var(--soft);color:var(--soft-ink)}
+.group{background:var(--card);border-radius:22px;padding:14px 16px 4px;margin-bottom:12px}
+.gh{display:flex;align-items:center;gap:10px;padding-bottom:4px}
+.gh h2{margin:0;flex:1;font-size:15px;font-weight:600}
+.gh span.n{font-size:13px;color:var(--muted)}
+.ic{width:32px;height:32px;border-radius:99px;display:flex;align-items:center;justify-content:center;flex:none}
+.ic svg{width:18px;height:18px}
+.emo{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;font-size:24px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.emo.s{width:32px;height:32px;border-radius:10px;font-size:19px}
+.ph{width:40px;height:40px;border-radius:12px;object-fit:cover;flex:none;background:#fff;box-shadow:inset 0 0 0 1px var(--line)}
+.ph.s{width:32px;height:32px;border-radius:10px}
+.photo{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+.photo img{width:110px;height:110px;border-radius:20px;object-fit:contain;background:#fff;flex:none}
+.photo .ph-empty{width:110px;height:110px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:56px;flex:none}
+.photo label{position:relative;display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px;border-radius:24px;background:var(--card);border:1px solid var(--edge);font-weight:600;font-size:15px;cursor:pointer}
+.photo input{position:absolute;width:1px;height:1px;opacity:0}
+.photo small{display:block;margin-top:8px;font-size:13px;color:var(--muted);line-height:1.4}
+.row{display:flex;align-items:center;gap:8px;min-height:58px;border-top:1px solid var(--line)}
+.tick{width:44px;height:44px;margin-left:-10px;border:0;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;flex:none}
+.tick span{width:24px;height:24px;border-radius:99px;border:1.75px solid #A3AAA4;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.tick:active span{transform:scale(.85)}
+.tick.done span{background:var(--accent);border-color:var(--accent);color:#fff}
+.rbody{flex:1;min-width:0;display:flex;align-items:center;gap:8px;min-height:52px;border:0;background:transparent;padding:0;text-align:left}
+.rtext{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rname{font-size:16px;font-weight:500;overflow-wrap:anywhere}
+.rnote{font-size:13px;color:var(--muted)}
+.rqty{font-size:15px;font-weight:600;white-space:nowrap}
+.who{width:24px;height:24px;border-radius:99px;background:var(--line);color:#3A413C;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none}
+.cart{padding:6px 4px 0}
+.cart .row{border-top:0;min-height:50px}
+.cart .rname{color:var(--muted);text-decoration:line-through}
+.cart .rqty{color:var(--muted);font-weight:500}
+.linkbtn{border:0;background:transparent;color:var(--accent);font-weight:600;font-size:14px;padding:10px 4px;min-height:44px}
+.empty{padding:34px 20px;text-align:center;color:var(--muted);font-size:15px;line-height:1.5;background:var(--card);border-radius:22px;margin-bottom:12px}
+.empty b{display:block;font-family:var(--display);font-size:22px;color:var(--ink);margin-bottom:6px}
+
+/* bara de jos */
+.bar{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 18px);z-index:20;display:flex;justify-content:center;pointer-events:none}
+.barin{width:100%;max-width:520px;padding:0 14px;display:flex;gap:8px;align-items:center;pointer-events:auto}
+.search{flex:1;min-width:0;display:flex;align-items:center;gap:10px;height:56px;padding:0 18px;border-radius:28px;background:rgba(255,255,255,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(22,26,23,.08);box-shadow:0 10px 30px rgba(22,26,23,.10);color:#3A413C}
+.search input{flex:1;min-width:0;border:0;background:transparent;font-size:16px;outline:none}
+.search input::placeholder{color:#6B726D}
+.tabs{display:flex;gap:4px;padding:6px;height:56px;border-radius:28px;background:rgba(22,26,23,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.tab{width:44px;height:44px;border-radius:22px;border:0;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center}
+.tab.on{background:#fff;color:var(--ink)}
+.sugg{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 84px);z-index:19;display:flex;justify-content:center;pointer-events:none}
+.suggin{width:100%;max-width:520px;padding:0 14px;pointer-events:auto}
+.sbox{background:var(--card);border-radius:22px;box-shadow:0 12px 40px rgba(22,26,23,.16);padding:6px;max-height:52vh;overflow-y:auto}
+.sopt{width:100%;display:flex;align-items:center;gap:12px;min-height:52px;padding:6px 10px;border:0;background:transparent;border-radius:14px;text-align:left}
+.sopt:active{background:var(--line)}
+.sopt .nm{flex:1;font-size:16px}
+.sopt .un{font-size:13px;color:var(--muted)}
+.sopt .ic{width:30px;height:30px}
+
+/* meniu */
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:18px}
+.wd{height:64px;border-radius:18px;border:0;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0}
+.wd small{font-size:12px;font-weight:500;color:var(--muted)}
+.wd b{font-size:18px;font-weight:600}
+.wd i{width:5px;height:5px;border-radius:9px;background:var(--accent)}
+.wd.today{background:var(--ink);color:#fff}
+.wd.today small{color:#fff;opacity:.8}
+.wd.today i{background:#fff}
+.arrows{display:flex;gap:8px}
+.arr{width:44px;height:44px;border-radius:99px;border:1px solid var(--edge);background:transparent;display:flex;align-items:center;justify-content:center}
+.day{width:100%;display:flex;align-items:center;gap:16px;padding:16px 16px 16px 18px;border-radius:22px;background:var(--card);border:0;text-align:left;margin-bottom:10px}
+.day.e{background:transparent;border:1.5px dashed #C9CEC6;padding:14px 16px 14px 18px}
+.dd{width:46px;display:flex;flex-direction:column;flex:none}
+.dd small{font-size:12px;font-weight:600;color:var(--muted)}
+.dd b{font-family:var(--display);font-size:24px;font-weight:700;line-height:1.1}
+.day.e .dd b{color:var(--muted)}
+.dt{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.dt b{font-family:var(--display);font-size:20px;font-weight:500;line-height:1.15}
+.dt small{font-size:13px;color:var(--muted)}
+.day.e .dt{font-size:15px;font-weight:500;color:#3A413C}
+.day.now{box-shadow:inset 0 0 0 2px var(--accent)}
+.big{width:100%;height:56px;border-radius:28px;border:0;background:var(--accent);color:#fff;font-size:16px;font-weight:600;margin-top:8px}
+.big:disabled{background:#B8BEB9}
+
+/* foaia de jos */
+.veil{position:fixed;inset:0;background:rgba(22,26,23,.32);z-index:40;opacity:0;transition:opacity .2s}
+.veil.show{opacity:1}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;display:flex;justify-content:center;transform:translateY(100%);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.sheet.show{transform:none}
+.sheetin{width:100%;max-width:520px;max-height:88vh;overflow-y:auto;background:var(--bg);border-radius:28px 28px 0 0;padding:10px 18px calc(env(safe-area-inset-bottom) + 22px)}
+.grab{width:40px;height:5px;border-radius:9px;background:#C9CEC6;margin:0 auto 14px}
+.sheet h3{margin:0 0 4px;font-family:var(--display);font-size:26px;font-weight:700}
+.sheet .sub{margin:0 0 18px;color:var(--muted);font-size:14px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.field > span{font-size:13px;font-weight:600;color:var(--muted)}
+.inp{height:52px;border-radius:16px;border:1px solid var(--edge);background:var(--card);padding:0 14px;font-size:16px;outline:none;width:100%}
+.inp:focus{border-color:var(--accent)}
+.step{display:flex;align-items:center;gap:12px}
+.step button{width:52px;height:52px;border-radius:16px;border:1px solid var(--edge);background:var(--card);font-size:22px;font-weight:500}
+.step b{flex:1;text-align:center;font-family:var(--display);font-size:26px}
+.seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;border-radius:16px;background:var(--line)}
+.seg button{height:44px;border-radius:12px;border:0;background:transparent;font-size:14px;font-weight:500;color:#3A413C}
+.seg button.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(22,26,23,.1)}
+.acts{display:flex;gap:10px;margin-top:8px}
+.acts button{flex:1;height:52px;border-radius:26px;border:0;font-size:16px;font-weight:600}
+.btn-p{background:var(--accent);color:#fff}
+.btn-s{background:var(--card);color:var(--ink);border:1px solid var(--edge)!important}
+.btn-d{background:transparent;color:var(--danger)}
+.ingr{display:flex;align-items:center;gap:10px;min-height:52px;padding:4px 4px 4px 14px;background:var(--card);border-radius:16px;margin-bottom:6px}
+.ingr .nm{flex:1;font-size:15px}
+.ingr .q{display:flex;align-items:center;gap:2px}
+.ingr .q button,.ingr .x{width:40px;height:40px;border-radius:12px;border:0;background:transparent;font-size:18px;color:#3A413C}
+.ingr .q span{min-width:64px;text-align:center;font-size:14px;font-weight:600}
+.check{display:flex;align-items:center;gap:12px;width:100%;min-height:54px;padding:4px 14px 4px 4px;border:0;background:var(--card);border-radius:16px;margin-bottom:6px;text-align:left}
+.check .nm{flex:1;font-size:15px}
+.check .q{font-size:14px;color:var(--muted)}
+.check.off .nm{color:var(--muted);text-decoration:line-through}
+.people{display:flex;flex-direction:column;gap:10px}
+.person{height:60px;border-radius:20px;border:0;background:var(--card);font-size:18px;font-weight:600;display:flex;align-items:center;gap:14px;padding:0 16px}
+.person i{width:36px;height:36px;border-radius:99px;background:var(--soft);color:var(--soft-ink);font-style:normal;display:flex;align-items:center;justify-content:center;font-size:15px}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 92px);transform:translate(-50%,20px);opacity:0;z-index:60;background:var(--ink);color:#fff;padding:12px 18px;border-radius:16px;font-size:14px;max-width:88vw;text-align:center;transition:all .2s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.days7{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.days7 button{height:52px;border-radius:16px;border:0;background:var(--card);font-size:15px;font-weight:500}
+.hint{font-size:13px;color:var(--muted);line-height:1.45;margin:4px 4px 16px}
+/* rețete */
+.rcard{width:100%;display:flex;align-items:center;gap:16px;padding:12px 16px 12px 12px;border-radius:24px;background:var(--card);border:0;text-align:left;margin-bottom:10px}
+.rhero{width:76px;height:76px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:42px;flex:none;object-fit:cover;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.rcard .rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.rcard .rt b{font-family:var(--display);font-size:20px;font-weight:600;line-height:1.15}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.meta span{font-size:12px;font-weight:500;color:#3A413C;background:var(--line);padding:4px 9px;border-radius:99px}
+.rbig{width:100%;height:150px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:84px;margin-bottom:16px;object-fit:cover;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.intro{font-size:15px;line-height:1.55;color:#2C322E;margin:12px 0 18px}
+.sec{font-family:var(--display);font-size:20px;font-weight:700;margin:22px 0 10px}
+.portii{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:18px;padding:8px 8px 8px 16px;margin-bottom:10px}
+.portii span{flex:1;font-size:15px;font-weight:500}
+.portii button{width:44px;height:44px;border-radius:14px;border:1px solid var(--edge);background:var(--bg);font-size:20px}
+.portii b{min-width:28px;text-align:center;font-size:18px}
+.ring{background:var(--card);border-radius:18px;padding:4px 16px}
+.ri{display:flex;align-items:center;gap:12px;min-height:54px;border-top:1px solid var(--line);padding:6px 0}
+.ri:first-child{border-top:0}
+.ri .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ri .tx span{font-size:16px;font-weight:500}
+.ri .tx small{font-size:13px;color:var(--muted)}
+.ri .am{font-size:15px;font-weight:600;text-align:right;white-space:nowrap}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.steps li{display:flex;gap:14px;background:var(--card);border-radius:18px;padding:16px}
+.steps li > b{width:32px;height:32px;border-radius:99px;background:var(--soft);color:var(--soft-ink);display:flex;align-items:center;justify-content:center;font-size:15px;flex:none}
+.steps li div{flex:1;font-size:15px;line-height:1.55}
+.steps li div strong{display:block;font-size:16px;margin-bottom:2px}
+.tips{background:var(--soft);color:var(--soft-ink);border-radius:18px;padding:14px 16px;font-size:15px;line-height:1.55}
+.tips p{margin:0 0 8px}.tips p:last-child{margin:0}
+.src{display:block;margin:16px 4px 4px;font-size:14px;color:var(--accent);font-weight:600;text-decoration:none;padding:8px 0}
+.rbtns{display:flex;gap:10px;margin:14px 0 4px}
+.rbtns button{flex:1;height:52px;border-radius:26px;border:0;font-size:15px;font-weight:600}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="app" id="app"></main>
+
+<div class="sugg" id="sugg" hidden><div class="suggin"><div class="sbox" id="sbox" role="listbox" aria-label="Sugestii"></div></div></div>
+
+<nav class="bar" aria-label="Bara de jos">
+  <div class="barin">
+    <label class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="text" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done" aria-label="Adaugă un produs" placeholder="Ce mai trebuie?">
+    </label>
+    <div class="tabs" role="tablist">
+      <button class="tab on" id="tab-lista" role="tab" aria-label="Lista" data-a="tab" data-v="lista"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
+      <button class="tab" id="tab-meniu" role="tab" aria-label="Meniul săptămânii" data-a="tab" data-v="meniu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></button>
+      <button class="tab" id="tab-retete" role="tab" aria-label="Rețete" data-a="tab" data-v="retete"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7.5h6M9 11h4"/></svg></button>
+    </div>
+  </div>
+</nav>
+
+<div class="veil" id="veil" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" hidden><div class="sheetin" id="sheetin"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- catalog ---------- */
+const CATS = [
+  {id:'leg', name:'Legume', bg:'#DDEBD9', fg:'#2B5A35', icon:'<path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14z"/><path d="M5 19l7-7"/>'},
+  {id:'fru', name:'Fructe', bg:'#F7E3D3', fg:'#8A4314', icon:'<path d="M12 8c-4-2-8 1-7 6s4 8 7 7c3 1 6-2 7-7s-3-8-7-6z"/><path d="M12 8c0-2 1-4 3-5"/>'},
+  {id:'lac', name:'Lactate și ouă', bg:'#E1E7F3', fg:'#2E4570', icon:'<path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/>'},
+  {id:'car', name:'Carne', bg:'#F5DEDA', fg:'#8A2E24', icon:'<path d="M15 4a5 5 0 0 1 5 5c0 3-3 6-7 6l-4 4a2 2 0 1 1-3-3l4-4c0-4 3-8 5-8z"/>'},
+  {id:'mez', name:'Mezeluri', bg:'#F3DDE4', fg:'#7D2A45', icon:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>'},
+  {id:'pes', name:'Pește', bg:'#D9ECEE', fg:'#1E5A60', icon:'<path d="M3 12c3-4 7-6 11-6s6 3 7 6c-1 3-3 6-7 6s-8-2-11-6z"/><circle cx="16" cy="11" r=".6"/>'},
+  {id:'pan', name:'Pâine', bg:'#F2E6D5', fg:'#7A4E1E', icon:'<path d="M5 11a4 4 0 0 1 2-7h10a4 4 0 0 1 2 7v8H5z"/>'},
+  {id:'cam', name:'Cămară', bg:'#EEE8D6', fg:'#5E5320', icon:'<path d="M8 3h8v3H8z"/><path d="M7 6h10v13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/>'},
+  {id:'con', name:'Condimente și sosuri', bg:'#F4E1D9', fg:'#7E3B22', icon:'<path d="M9 3h6l1 5H8z"/><path d="M8 8h8v12H8z"/>'},
+  {id:'dul', name:'Dulciuri și gustări', bg:'#F1DFEC', fg:'#6E2F5C', icon:'<circle cx="12" cy="12" r="4"/><path d="M8 12L3 9v6zM16 12l5-3v6z"/>'},
+  {id:'bau', name:'Băuturi', bg:'#DCE8F0', fg:'#24506B', icon:'<path d="M10 3h4v3l2 3v12H8V9l2-3z"/>'},
+  {id:'cng', name:'Congelate', bg:'#DEEBF5', fg:'#29507A', icon:'<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/>'},
+  {id:'cur', name:'Curățenie', bg:'#E3EDE9', fg:'#2D5A4C', icon:'<path d="M9 9h6v12H9z"/><path d="M10 9V5h4l3-2"/>'},
+  {id:'igi', name:'Igienă și cosmetice', bg:'#E9E4F1', fg:'#4E3C73', icon:'<rect x="8" y="3" width="8" height="18" rx="3"/><path d="M8 8h8"/>'},
+  {id:'alt', name:'Altele', bg:'#E8EAE5', fg:'#3A413C', icon:'<path d="M4 12V4h8l8 8-8 8z"/><circle cx="8.5" cy="8.5" r="1"/>'}
+];
+const CAT = Object.fromEntries(CATS.map(c => [c.id, c]));
+
+const RAW = {
+leg:'Cartofi:kg|Cartofi noi:kg|Ceapă galbenă:kg|Ceapă roșie:kg|Ceapă verde:legătură|Usturoi:căpățână|Usturoi verde:legătură|Morcovi:kg|Pătrunjel rădăcină:buc|Pătrunjel verde:legătură|Mărar:legătură|Leuștean:legătură|Țelină rădăcină:buc|Țelină apio:buc|Păstârnac:buc|Roșii:kg|Roșii cherry:caserolă|Castraveți:kg|Ardei gras:buc|Ardei kapia:buc|Ardei iute:buc|Varză albă:buc|Varză roșie:buc|Varză murată:buc|Conopidă:buc|Broccoli:buc|Dovlecei:kg|Vinete:kg|Salată verde:buc|Rucola:pungă|Spanac:pungă|Ciuperci:caserolă|Fasole verde:kg|Mazăre verde:kg|Porumb fiert:buc|Sfeclă roșie:kg|Ridichi:legătură|Praz:buc|Dovleac:buc|Ghimbir:buc|Gulie:buc|Ștevie:legătură|Urzici:pungă',
+fru:'Mere:kg|Pere:kg|Banane:kg|Portocale:kg|Mandarine:kg|Clementine:kg|Lămâi:buc|Lime:buc|Grepfrut:buc|Struguri:kg|Kiwi:buc|Ananas:buc|Mango:buc|Pepene roșu:buc|Pepene galben:buc|Căpșuni:caserolă|Cireșe:kg|Vișine:kg|Prune:kg|Piersici:kg|Nectarine:kg|Caise:kg|Avocado:buc|Afine:caserolă|Zmeură:caserolă|Rodie:buc|Gutui:kg|Nuci:pungă|Migdale:pungă|Stafide:pungă|Curmale:pungă',
+lac:'Lapte:l|Lapte fără lactoză:l|Lapte bătut:sticlă|Sana:sticlă|Kefir:sticlă|Iaurt:buc|Iaurt grecesc:buc|Iaurt cu fructe:buc|Smântână:cutie|Smântână pentru gătit:cutie|Frișcă:cutie|Unt:pachet|Margarină:cutie|Brânză telemea:pachet|Brânză de burduf:caserolă|Brânză de vaci:caserolă|Urdă:caserolă|Cașcaval:pachet|Cașcaval feliat:pachet|Mozzarella:buc|Parmezan:buc|Brânză topită:cutie|Cremă de brânză:cutie|Mascarpone:cutie|Ricotta:cutie|Budincă:buc|Ouă:cofraj|Ouă de prepeliță:cofraj',
+car:'Piept de pui:kg|Pulpe de pui:kg|Pulpe dezosate:kg|Aripi de pui:kg|Pui întreg:buc|Ficat de pui:caserolă|Pipote:caserolă|Carne tocată:kg|Carne tocată de vită:kg|Ceafă de porc:kg|Cotlet de porc:kg|Mușchi de porc:kg|Pulpă de porc:kg|Costiță:kg|Carne de vită:kg|Rasol de vită:kg|Carne de curcan:kg|Carne de miel:kg|Mici:caserolă|Cârnați:pachet|Cârnați proaspeți:caserolă|Șnițel:caserolă',
+mez:'Salam:buc|Salam feliat:pachet|Șuncă:pachet|Parizer:buc|Kaizer:pachet|Bacon:pachet|Pastramă:pachet|Muschiulet afumat:pachet|Pate:cutie|Crenvurști:pachet|Cabanos:pachet|Salam de Sibiu:buc|Slănină:buc|Tobă:buc|Caltaboș:buc',
+pes:'Pește file:pachet|Somon:caserolă|Păstrăv:buc|Crap:kg|Macrou:buc|Hering afumat:buc|Creveți:pungă|Fructe de mare:pungă|Salată de icre:cutie|Bețișoare de surimi:pachet',
+pan:'Pâine:buc|Pâine feliată:buc|Pâine integrală:buc|Pâine neagră:buc|Baghetă:buc|Chifle:pachet|Chifle de hamburger:pachet|Lipie:pachet|Tortilla:pachet|Covrigi:buc|Cornuri:buc|Croissant:buc|Pesmet:pungă|Cozonac:buc|Foi de plăcintă:pachet|Aluat de pizza:pachet|Blat de tort:pachet|Pâine prăjită:pachet|Grisine:pachet',
+cam:'Făină albă:kg|Făină integrală:kg|Mălai:kg|Zahăr:kg|Zahăr brun:pungă|Zahăr pudră:pungă|Zahăr vanilat:plic|Sare:kg|Sare grunjoasă:kg|Orez:pungă|Orez cu bob lung:pungă|Paste:pachet|Spaghete:pachet|Penne:pachet|Lasagna foi:pachet|Tăiței de supă:pachet|Griș:pungă|Fulgi de ovăz:pungă|Cereale:cutie|Musli:pungă|Ulei de floarea-soarelui:l|Ulei de măsline:sticlă|Oțet:sticlă|Oțet balsamic:sticlă|Bulion:sticlă|Pastă de tomate:borcan|Roșii în conservă:conservă|Ton în conservă:conservă|Sardine:conservă|Fasole boabe:pungă|Fasole în conservă:conservă|Linte:pungă|Năut:conservă|Porumb dulce:conservă|Mazăre la conservă:conservă|Ciuperci la borcan:borcan|Măsline:borcan|Zacuscă:borcan|Murături:borcan|Castraveți murați:borcan|Gem:borcan|Dulceață:borcan|Miere:borcan|Unt de arahide:borcan|Drojdie:plic|Drojdie uscată:plic|Praf de copt:plic|Bicarbonat:plic|Esență de vanilie:fiolă|Esență de rom:fiolă|Cacao:pungă|Ciocolată de gătit:tabletă|Gelatină:plic|Amidon:pungă|Supă la plic:plic|Cuburi de supă:cutie|Borș:sticlă|Bors praf:plic|Lapte condensat:cutie|Lapte praf:pungă|Nucă de cocos:pungă',
+con:'Piper:pungă|Boia dulce:pungă|Boia iute:pungă|Boia afumată:pungă|Cimbru:plic|Oregano:plic|Busuioc:plic|Rozmarin:plic|Foi de dafin:plic|Delikat:pungă|Vegeta:pungă|Scorțișoară:plic|Nucșoară:plic|Cuișoare:plic|Chimen:plic|Curry:plic|Condimente pentru pui:plic|Muștar:borcan|Ketchup:sticlă|Maioneză:borcan|Sos de soia:sticlă|Sos de roșii:borcan|Hrean:borcan|Sos barbeque:sticlă|Sos de usturoi:sticlă|Pesto:borcan',
+dul:'Ciocolată:tabletă|Biscuiți:pachet|Napolitane:pachet|Eugenia:pachet|Rahat:cutie|Halva:cutie|Prăjituri:caserolă|Chipsuri:pungă|Sticks:pungă|Covrigei:pungă|Popcorn:pungă|Alune:pungă|Arahide:pungă|Semințe:pungă|Bomboane:pungă|Gumă:pachet|Cremă de ciocolată:borcan|Batoane de cereale:pachet|Fructe uscate:pungă|Cereale pentru copii:cutie',
+bau:'Apă plată:bax|Apă minerală:bax|Apă plată 5 l:bidon|Suc:sticlă|Suc natural:cutie|Fresh de portocale:sticlă|Cola:sticlă|Bere:bax|Bere la doză:doză|Vin roșu:sticlă|Vin alb:sticlă|Țuică:sticlă|Cafea măcinată:pachet|Cafea boabe:pachet|Cafea capsule:cutie|Cafea solubilă:borcan|Ceai:cutie|Ceai verde:cutie|Ciocolată caldă:cutie|Sirop:sticlă|Energizant:doză|Lapte vegetal:cutie',
+cng:'Cartofi prăjiți congelați:pungă|Legume congelate:pungă|Mazăre congelată:pungă|Ardei congelați:pungă|Spanac congelat:pungă|Fructe de pădure congelate:pungă|Pizza congelată:buc|Înghețată:cutie|Înghețată la bucată:buc|Pește pane:cutie|Gogoși congelate:pungă|Colțunași:pungă|Gheață:pungă|Foietaj:pachet',
+cur:'Detergent de rufe:flacon|Detergent capsule:cutie|Balsam de rufe:flacon|Înălbitor:flacon|Soluție pentru pete:flacon|Detergent de vase:flacon|Tablete mașina de vase:cutie|Sare mașina de vase:cutie|Agent de clătire:flacon|Soluție de geamuri:flacon|Soluție universală:flacon|Soluție de baie:flacon|Clor:flacon|Gel de toaletă:flacon|Odorizant:buc|Bureți de vase:pachet|Lavete:pachet|Mop:buc|Saci de gunoi:rolă|Hârtie igienică:pachet|Prosoape de hârtie:pachet|Șervețele de masă:pachet|Folie alimentară:rolă|Folie de aluminiu:rolă|Hârtie de copt:rolă|Pungi de congelare:cutie|Becuri:buc|Baterii:pachet|Chibrituri:cutie|Lumânări:pachet|Insecticid:buc',
+igi:'Șampon:flacon|Balsam de păr:flacon|Mască de păr:borcan|Gel de duș:flacon|Săpun:buc|Săpun lichid:flacon|Pastă de dinți:tub|Periuță de dinți:buc|Apă de gură:flacon|Ață dentară:buc|Deodorant:buc|Antiperspirant:buc|Cremă de mâini:tub|Cremă de corp:flacon|Cremă de față:buc|Cremă de protecție solară:flacon|Demachiant:flacon|Apă micelară:flacon|Dischete demachiante:pachet|Bețișoare pentru urechi:pachet|Absorbante:pachet|Tampoane:cutie|Lame de ras:pachet|Aparat de ras:buc|Spumă de ras:buc|Șervețele umede:pachet|Batiste:pachet|Vopsea de păr:cutie|Fixativ:buc|Gel de păr:buc|Lac de unghii:buc|Dizolvant:flacon|Plasturi:cutie|Vitamine:cutie|Parfum:buc|Rimel:buc|Fond de ten:buc|Ruj:buc'
+};
+const CATALOG = [];
+for (const c in RAW) for (const s of RAW[c].split('|')) { const [n, u] = s.split(':'); CATALOG.push({ name: n, unit: u, cat: c }); }
+
+/* ---------- utilitare ---------- */
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
+const slug = (s) => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'x';
+const rid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const STEP_UNITS = { kg: .5, l: .5 };
+const fmtQty = (q, u) => { const n = Math.round(q * 100) / 100; return String(n).replace('.', ',') + ' ' + u; };
+const findCat = (name) => { const n = norm(name); const hit = CATALOG.find((c) => norm(c.name) === n); return hit || null; };
+const STORES = [{ id: 'lidl', name: 'Lidl' }, { id: 'kaufland', name: 'Kaufland' }, { id: 'dm', name: 'DM' }];
+const STORE_NAME = { lidl: 'Lidl', kaufland: 'Kaufland', dm: 'DM', any: 'Lidl sau Kaufland' };
+const PEOPLE = [{ id: 'U', name: 'Usk' }, { id: 'M', name: 'Marinela' }, { id: 'D', name: 'Denisa' }];
+const PNAME = Object.fromEntries(PEOPLE.map((p) => [p.id, p.name]));
+const ZILE = ['Duminică', 'Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă'];
+const ZSCURT = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+const LUNI = ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'];
+const ymd = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const mondayOf = (d) => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const wd = (x.getDay() + 6) % 7; return addDays(x, -wd); };
+const icon = (cat, size) => { const c = CAT[cat] || CAT.alt; return '<span class="ic" style="background:' + c.bg + ';color:' + c.fg + (size ? ';width:' + size + 'px;height:' + size + 'px' : '') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + c.icon + '</svg></span>'; };
+const CAT_EMO = { leg: '🥬', fru: '🍎', lac: '🥛', car: '🥩', mez: '🥓', pes: '🐟', pan: '🍞', cam: '🫙', con: '🧂', dul: '🍫', bau: '🧃', cng: '🧊', cur: '🧽', igi: '🧴', alt: '🛒' };
+const EMO = [
+  ['ardei iute', '🌶️'], ['ardei', '🫑'], ['cartofi prajiti', '🍟'], ['cartof', '🥔'], ['ceapa verde', '🌱'], ['ceapa', '🧅'], ['praz', '🧅'], ['usturoi', '🧄'],
+  ['morcov', '🥕'], ['rosii', '🍅'], ['pasta de tomate', '🥫'], ['bulion', '🥫'], ['sos de rosii', '🥫'], ['castraveti murati', '🥒'], ['castrave', '🥒'], ['dovlece', '🥒'],
+  ['varza', '🥬'], ['salata', '🥬'], ['spanac', '🥬'], ['rucola', '🥬'], ['stevie', '🥬'], ['urzici', '🥬'], ['telina', '🥬'], ['broccoli', '🥦'], ['conopid', '🥦'],
+  ['vinete', '🍆'], ['ciuperci', '🍄'], ['porumb', '🌽'], ['mazare', '🫛'], ['fasole verde', '🫛'], ['fasole', '🫘'], ['linte', '🫘'], ['naut', '🫘'], ['ghimbir', '🫚'],
+  ['patrunjel', '🌿'], ['marar', '🌿'], ['leustean', '🌿'], ['busuioc', '🌿'], ['cimbru', '🌿'], ['oregano', '🌿'], ['rozmarin', '🌿'], ['foi de dafin', '🍃'],
+  ['dovleac', '🎃'], ['ridichi', '🥗'], ['sfecla', '🥗'], ['avocado', '🥑'], ['mere', '🍎'], ['pere', '🍐'], ['banane', '🍌'], ['portocal', '🍊'], ['fresh de portocale', '🧃'],
+  ['mandarin', '🍊'], ['clementin', '🍊'], ['grepfrut', '🍊'], ['lamai', '🍋'], ['lime', '🍋'], ['struguri', '🍇'], ['stafide', '🍇'], ['kiwi', '🥝'], ['ananas', '🍍'], ['mango', '🥭'],
+  ['pepene rosu', '🍉'], ['pepene', '🍈'], ['capsuni', '🍓'], ['zmeura', '🍓'], ['fructe de padure', '🫐'], ['afine', '🫐'], ['cirese', '🍒'], ['visine', '🍒'],
+  ['piersic', '🍑'], ['nectarin', '🍑'], ['caise', '🍑'], ['nuca de cocos', '🥥'], ['nuci', '🌰'], ['migdale', '🌰'], ['alune', '🥜'], ['arahide', '🥜'], ['unt de arahide', '🥜'],
+  ['lapte condensat', '🥫'], ['lapte', '🥛'], ['sana', '🥛'], ['kefir', '🥛'], ['iaurt', '🥛'], ['smantana', '🥛'], ['frisca', '🥛'],
+  ['unt', '🧈'], ['margarina', '🧈'], ['branza', '🧀'], ['cascaval', '🧀'], ['mozzarella', '🧀'], ['parmezan', '🧀'], ['urda', '🧀'], ['mascarpone', '🧀'], ['ricotta', '🧀'],
+  ['oua', '🥚'], ['ou ', '🥚'], ['pui', '🍗'], ['aripi', '🍗'], ['pulpe', '🍗'], ['curcan', '🍗'], ['ficat', '🍗'], ['pipote', '🍗'], ['snitel', '🍗'],
+  ['mici', '🌭'], ['carnati', '🌭'], ['crenvursti', '🌭'], ['cabanos', '🌭'], ['bacon', '🥓'], ['slanina', '🥓'], ['kaizer', '🥓'], ['costita', '🥓'], ['sunca', '🍖'], ['salam', '🍖'],
+  ['parizer', '🍖'], ['pastrama', '🍖'], ['toba', '🍖'], ['carne', '🥩'], ['ceafa', '🥩'], ['cotlet', '🥩'], ['muschi', '🥩'], ['rasol', '🥩'], ['vita', '🥩'],
+  ['creveti', '🦐'], ['fructe de mare', '🦐'], ['ton', '🐟'], ['sardine', '🐟'], ['somon', '🐟'], ['peste', '🐟'], ['pastrav', '🐟'], ['crap', '🐟'], ['macrou', '🐟'], ['hering', '🐟'],
+  ['bagheta', '🥖'], ['croissant', '🥐'], ['cornuri', '🥐'], ['covrigei', '🥨'], ['covrigi', '🥨'], ['lipie', '🫓'], ['tortilla', '🫓'], ['paine', '🍞'], ['chifle', '🍞'], ['cozonac', '🍞'],
+  ['faina', '🌾'], ['malai', '🌽'], ['gris', '🌾'], ['fulgi de ovaz', '🥣'], ['cereale', '🥣'], ['musli', '🥣'], ['orez', '🍚'], ['spaghete', '🍝'], ['paste', '🍝'], ['penne', '🍝'],
+  ['lasagna', '🍝'], ['taitei', '🍜'], ['supa', '🍜'], ['bors', '🍜'], ['ulei', '🫗'], ['otet', '🫗'], ['untura', '🫙'], ['sare', '🧂'], ['piper', '🧂'], ['zahar', '🧂'],
+  ['boia', '🌶️'], ['chimen', '🧂'], ['miere', '🍯'], ['gem', '🍯'], ['dulceata', '🍯'], ['zacusca', '🫙'], ['murat', '🫙'], ['masline', '🫒'], ['ketchup', '🥫'], ['conserv', '🥫'],
+  ['mustar', '🫙'], ['maioneza', '🫙'], ['hrean', '🫙'], ['pesto', '🫙'], ['ciocolata calda', '☕'], ['ciocolat', '🍫'], ['cacao', '🍫'], ['biscuit', '🍪'], ['eugenia', '🍪'],
+  ['napolitan', '🧇'], ['chips', '🥔'], ['popcorn', '🍿'], ['bomboane', '🍬'], ['guma', '🍬'], ['rahat', '🍬'], ['halva', '🍬'], ['prajitur', '🍰'], ['blat de tort', '🍰'],
+  ['gogosi', '🍩'], ['inghetata', '🍦'], ['pizza', '🍕'], ['aluat de pizza', '🍕'], ['gheata', '🧊'], ['gelatina', '🍮'], ['budinca', '🍮'],
+  ['apa de gura', '🪥'], ['apa micelara', '🧴'], ['sare masina', '🍽️'], ['agent de clatire', '🍽️'], ['apa', '💧'], ['suc', '🧃'], ['sirop', '🧃'], ['cola', '🥤'], ['energizant', '🥤'],
+  ['bere', '🍺'], ['vin', '🍷'], ['tuica', '🥃'], ['cafea', '☕'], ['ceai', '🍵'], ['lapte vegetal', '🥛'],
+  ['detergent de vase', '🍽️'], ['tablete masina', '🍽️'], ['detergent', '🧺'], ['balsam de rufe', '🧺'], ['inalbitor', '🧺'], ['hartie igienica', '🧻'], ['prosoape de hartie', '🧻'],
+  ['servetele', '🧻'], ['batiste', '🧻'], ['saci de gunoi', '🗑️'], ['bureti', '🧽'], ['lavete', '🧽'], ['mop', '🧹'], ['becuri', '💡'], ['baterii', '🔋'], ['lumanari', '🕯️'],
+  ['chibrituri', '🔥'], ['folie', '🧻'], ['hartie de copt', '🧻'], ['pasta de dinti', '🪥'], ['periuta', '🪥'], ['ata dentara', '🪥'], ['apa de gura', '🪥'], ['sapun', '🧼'],
+  ['lame', '🪒'], ['aparat de ras', '🪒'], ['spuma de ras', '🪒'], ['plasturi', '🩹'], ['vitamine', '💊'], ['parfum', '🌸'], ['ruj', '💄'], ['rimel', '💄'], ['fond de ten', '💄'],
+  ['lac de unghii', '💅'], ['vopsea de par', '💇'], ['sampon', '🧴'], ['balsam de par', '🧴'], ['gel', '🧴'], ['crema', '🧴'], ['deodorant', '🧴'], ['dischete', '🧴'], ['absorbante', '🧴']
+];
+function emojiFor(name, cat) {
+  const n = norm(name) + ' ';
+  let best = '', bestLen = 0;
+  for (const [k, e] of EMO) { if (k.length > bestLen && (n.startsWith(k) || n.includes(' ' + k))) { best = e; bestLen = k.length; } }
+  return best || CAT_EMO[cat] || '🛒';
+}
+let photoMap = {};
+const BLOBS = {}, LOADING = {};
+function photoSrc(p) {
+  if (!p) return '';
+  if (p.indexOf('gh:') !== 0) return p;
+  if (BLOBS[p]) return BLOBS[p];
+  if (!LOADING[p] && GH.token) {
+    LOADING[p] = true;
+    gh('/contents/' + p.slice(3), { headers: { Accept: 'application/vnd.github.raw' } }).then((r) => r.ok ? r.blob() : null).then((b) => { if (b) { BLOBS[p] = URL.createObjectURL(b); render(); if (sheetOpen && sheetCtx && sheetCtx.id) { const im = document.querySelector('.photo img'); if (im && !im.src) im.src = BLOBS[p]; } } }).catch(() => {});
+  }
+  return '';
+}
+function photoOf(it) { return photoSrc(it.photo || photoMap[slug(it.name)] || ''); }
+function thumb(it, small) {
+  const p = photoOf(it);
+  if (p) return '<img class="ph' + (small ? ' s' : '') + '" src="' + esc(p) + '" alt="" loading="lazy">';
+  const c = CAT[it.cat] || CAT.alt;
+  return '<span class="emo' + (small ? ' s' : '') + '" style="background:' + c.bg + '" aria-hidden="true">' + emojiFor(it.name, it.cat) + '</span>';
+}
+const CHECK ='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
+const ls = {
+  get(k, d) { try { const v = localStorage.getItem('celuam_' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('celuam_' + k, JSON.stringify(v)); } catch (e) {} }
+};
+let toastT;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
+
+/* ---------- GitHub ---------- */
+const GH = { owner: 'uskatu', repo: 'ce-luam-date', branch: ls.get('ghbranch', 'main'), token: ls.get('ghtoken', '') };
+let needKey = false;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+function gh(path, opts) {
+  opts = opts || {};
+  const h = Object.assign({ Authorization: 'Bearer ' + GH.token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, opts.headers || {});
+  return fetch('https://api.github.com/repos/' + GH.owner + '/' + GH.repo + path, Object.assign({}, opts, { headers: h, cache: 'no-store' }));
+}
+const b64e = (str) => { const bytes = new TextEncoder().encode(str); let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(bin); };
+const b64d = (b) => { const bin = atob(String(b).replace(/\s/g, '')); const bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i); return new TextDecoder().decode(bytes); };
+async function readCol(c) {
+  const r = await gh('/contents/data/' + c + '.json?ref=' + encodeURIComponent(GH.branch));
+  if (r.status === 404) return { obj: {}, sha: null, missing: true };
+  if (!r.ok) throw r;
+  const j = await r.json();
+  let obj = {}; try { obj = JSON.parse(b64d(j.content)) || {}; } catch (e) {}
+  return { obj: obj, sha: j.sha };
+}
+async function writeCol(c, mutate, msg) {
+  for (let t = 0; t < 5; t++) {
+    const cur = await readCol(c);
+    mutate(cur.obj);
+    const body = { message: msg, content: b64e(JSON.stringify(cur.obj, null, 1)), branch: GH.branch };
+    if (cur.sha) body.sha = cur.sha;
+    const r = await gh('/contents/data/' + c + '.json', { method: 'PUT', body: JSON.stringify(body) });
+    if (r.ok) return;
+    if (r.status === 409 || r.status === 422) { await sleep(300 + Math.random() * 900); continue; }
+    throw r;
+  }
+  throw new Error('conflict');
+}
+async function maybeSeed() {
+  const probe = await readCol('recipes');
+  if (!probe.missing) return;
+  let seed = null;
+  try { const r = await fetch('seed.json', { cache: 'no-store' }); if (r.ok) seed = await r.json(); } catch (e) {}
+  if (!seed) return;
+  for (const c of COLS) {
+    const add = seed[c]; if (!add || !Object.keys(add).length) continue;
+    await writeCol(c, (obj) => { for (const k in add) if (!(k in obj)) obj[k] = add[k]; }, 'Date de început: ' + c);
+  }
+}
+
+/* ---------- stocare: comună (db) sau doar pe telefon ---------- */
+const COLS = ['items', 'menu', 'dishes', 'queue', 'meta', 'photos', 'recipes'];
+const S = { items: [], menu: [], dishes: [], queue: [], meta: [], photos: [], recipes: [] };
+let ASSETS = null;
+const Store = {
+  mode: 'local', db: null, unsubs: [],
+  local: ls.get('data', { items: {}, menu: {}, dishes: {}, queue: {}, meta: {} }),
+  chains: {},
+  startLocal() {
+    this.mode = 'local';
+    for (const c of COLS) this.emitLocal(c);
+  },
+  emitLocal(c) {
+    const o = this.local[c] || {};
+    S[c] = Object.keys(o).map((id) => Object.assign({ id: id }, o[id]));
+    render();
+  },
+  /* GitHub: datele stau în repo-ul privat, câte un fișier JSON pe colecție */
+  pending: {}, timers: {}, flushing: {}, lastHead: '',
+  async startGH() {
+    this.mode = 'remote'; syncState = 'slow'; render();
+    try {
+      await maybeSeed();
+      await this.pull(true);
+    } catch (e) { syncState = 'off'; render(); }
+    setInterval(() => { if (document.visibilityState === 'visible') this.pull(false); }, 20000);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') this.pull(false); });
+  },
+  async pull(force) {
+    try {
+      const r = await gh('/branches/' + GH.branch);
+      if (!r.ok) throw r;
+      const head = (await r.json()).commit.sha;
+      if (!force && head === this.lastHead) { syncState = 'on'; return; }
+      const res = await Promise.all(COLS.map((c) => readCol(c)));
+      COLS.forEach((c, i) => {
+        if ((this.pending[c] && this.pending[c].length) || this.flushing[c]) return;
+        const o = res[i].obj; S[c] = Object.keys(o).map((id) => Object.assign({ id: id }, o[id]));
+      });
+      this.lastHead = head; syncState = 'on'; render();
+    } catch (e) { syncState = (e && e.status === 401) ? 'key' : 'off'; render(); }
+  },
+  op(c, kind, id, v) {
+    const arr = S[c]; const i = arr.findIndex((x) => x.id === id);
+    if (kind === 'set') { const nv = Object.assign({ id: id }, v); if (i >= 0) arr[i] = nv; else arr.push(nv); }
+    else if (i >= 0) arr.splice(i, 1);
+    render();
+    (this.pending[c] = this.pending[c] || []).push({ kind: kind, id: id, v: v });
+    clearTimeout(this.timers[c]);
+    this.timers[c] = setTimeout(() => this.flush(c), 500);
+    return Promise.resolve();
+  },
+  async flush(c) {
+    if (this.flushing[c]) { this.timers[c] = setTimeout(() => this.flush(c), 400); return; }
+    const ops = this.pending[c] || []; if (!ops.length) return;
+    this.pending[c] = []; this.flushing[c] = true;
+    try {
+      await writeCol(c, (obj) => { for (const o of ops) { if (o.kind === 'set') obj[o.id] = o.v; else delete obj[o.id]; } }, (PNAME[UI.me] || 'Cineva') + ': ' + c);
+      syncState = 'on';
+    } catch (e) {
+      this.pending[c] = ops.concat(this.pending[c] || []);
+      syncState = (e && e.status === 401) ? 'key' : 'off';
+      toast('Nu s-a salvat încă, reîncerc');
+      this.timers[c] = setTimeout(() => this.flush(c), 5000);
+    }
+    this.flushing[c] = false; render();
+  },
+  startRemote(db) {
+    this.mode = 'remote'; this.db = db;
+    let first = 0;
+    const timer = setTimeout(() => { if (first < COLS.length) { syncState = 'slow'; render(); } }, 10000);
+    for (const c of COLS) {
+      const u = db.collection(c).onSnapshot((snap) => {
+        S[c] = snap.docs.map((d) => Object.assign({ id: d.id }, d.data()));
+        if (!snap.metadata.fromCache) { first++; if (first >= COLS.length) { clearTimeout(timer); syncState = 'on'; } }
+        render();
+      }, (err) => {
+        clearTimeout(timer);
+        syncState = 'off'; render();
+      });
+      this.unsubs.push(u);
+    }
+  },
+  queue(key, fn) {
+    const p = (this.chains[key] || Promise.resolve()).then(fn).catch((e) => {
+      if (e && e.code === 'quota_exceeded') toast('S-a umplut spațiul. Golește coșul și încearcă iar.');
+      else if (e && e.code === 'invalid_argument') toast('Nu am putut salva. Poate n-ai drept de scriere aici.');
+      else toast('Nu s-a salvat, mai încearcă o dată.');
+    });
+    this.chains[key] = p; return p;
+  },
+  set(c, id, v) {
+    if (this.mode === 'remote') return this.op(c, 'set', id, v);
+    (this.local[c] = this.local[c] || {})[id] = v; ls.set('data', this.local); this.emitLocal(c); return Promise.resolve();
+  },
+  del(c, id) {
+    if (this.mode === 'remote') return this.op(c, 'del', id);
+    if (this.local[c]) delete this.local[c][id]; ls.set('data', this.local); this.emitLocal(c); return Promise.resolve();
+  }
+};
+let syncState = 'local';
+const strip = (o) => { const x = Object.assign({}, o); delete x.id; return x; };
+
+/* ---------- stare UI ---------- */
+const UI = {
+  tab: ['#meniu', '#retete'].includes(location.hash) ? location.hash.slice(1) : 'lista',
+  rq: '',
+  store: ls.get('store', 'lidl'),
+  me: ls.get('me', null),
+  week: 0,
+  freq: ls.get('freq', {})
+};
+(function initWeek() { const wd = new Date().getDay(); UI.week = (wd === 6 || wd === 0) ? 1 : 0; })();
+
+/* ---------- acțiuni pe listă ---------- */
+function visibleItems() {
+  return S.items.filter((i) => UI.store === 'dm' ? i.store === 'dm' : (i.store === 'any' || i.store === UI.store));
+}
+function addItem(name, qty, unit, cat, opts) {
+  opts = opts || {};
+  name = String(name).trim(); if (!name) return;
+  const known = findCat(name);
+  unit = unit || (known ? known.unit : 'buc');
+  cat = cat || (known ? known.cat : 'alt');
+  qty = qty || 1;
+  const store = opts.store || (UI.store === 'dm' ? 'dm' : 'any');
+  const same = S.items.find((i) => !i.done && norm(i.name) === norm(name) && i.store === store && i.unit === unit);
+  if (same) {
+    return Store.set('items', same.id, Object.assign(strip(same), { qty: Math.round((same.qty + qty) * 100) / 100 }));
+  }
+  return Store.set('items', rid(), { name: name, qty: qty, unit: unit, cat: cat, store: store, note: '', who: UI.me || '', done: false, at: Date.now() });
+}
+function bumpFreq(name) { UI.freq[name] = (UI.freq[name] || 0) + 1; ls.set('freq', UI.freq); }
+
+/* ---------- randare ---------- */
+function render() {
+  photoMap = {}; for (const p of S.photos) if (p.photo) photoMap[p.id] = p.photo;
+  const app = $('#app');
+  $('#tab-lista').classList.toggle('on', UI.tab === 'lista');
+  $('#tab-meniu').classList.toggle('on', UI.tab === 'meniu');
+  $('#tab-lista').setAttribute('aria-selected', UI.tab === 'lista');
+  $('#tab-meniu').setAttribute('aria-selected', UI.tab === 'meniu');
+  $('#tab-retete').classList.toggle('on', UI.tab === 'retete');
+  $('#tab-retete').setAttribute('aria-selected', UI.tab === 'retete');
+  const q = $('#q');
+  q.placeholder = UI.tab === 'lista' ? 'Ce mai trebuie?' : UI.tab === 'meniu' ? 'O idee de mâncare' : 'Caută o rețetă';
+  q.setAttribute('aria-label', UI.tab === 'lista' ? 'Adaugă un produs' : UI.tab === 'meniu' ? 'Adaugă o idee de mâncare' : 'Caută o rețetă');
+  app.innerHTML = UI.tab === 'lista' ? viewList() : UI.tab === 'meniu' ? viewMenu() : viewRecipes();
+  if (!UI.me && !sheetOpen && !needKey) askWho();
+}
+function syncLabel() {
+  if (syncState === 'on') return '<span class="sync on"><i></i>la toți</span>';
+  if (syncState === 'slow') return '<span class="sync"><i></i>se conectează…</span>';
+  if (syncState === 'off') return '<span class="sync"><i></i>fără legătură</span>';
+  if (syncState === 'key') return '<span class="sync"><i></i>cheia nu mai merge</span>';
+  return '<span class="sync"><i></i>doar pe telefonul ăsta</span>';
+}
+function header(title, sub) {
+  return '<div class="top"><div class="t"><p class="date"><span>' + esc(sub) + '</span>' + syncLabel() + '</p><h1>' + esc(title) + '</h1></div>' +
+    '<button class="me" data-a="who" aria-label="Schimbă persoana, acum ' + esc(PNAME[UI.me] || 'nimeni') + '">' + esc(UI.me || '?') + '</button></div>';
+}
+function todayText() { const d = new Date(); return ZILE[d.getDay()] + ', ' + d.getDate() + ' ' + LUNI[d.getMonth()]; }
+
+function viewList() {
+  let h = header('Ce luăm?', todayText());
+  h += '<div class="pills" role="group" aria-label="Magazin">' + STORES.map((s) =>
+    '<button class="pill' + (UI.store === s.id ? ' on' : '') + '" aria-pressed="' + (UI.store === s.id) + '" data-a="store" data-v="' + s.id + '">' + s.name + '</button>').join('') + '</div>';
+
+  const p = S.meta.find((m) => m.id === 'plecare');
+  if (p && p.who && p.who !== UI.me && Date.now() - p.at < 3 * 3600 * 1000) {
+    const min = Math.max(1, Math.round((Date.now() - p.at) / 60000));
+    const ago = min < 60 ? 'acum ' + min + ' min' : 'acum ' + Math.round(min / 60) + ' h';
+    h += '<div class="banner"><b>' + esc(PNAME[p.who] || 'Cineva') + '</b> a plecat la ' + esc(STORE_NAME[p.store] || p.store) + ', ' + ago + '. Dacă mai trebuie ceva, pune acum în listă.</div>';
+  }
+
+  const vis = visibleItems();
+  const left = vis.filter((i) => !i.done);
+  const done = vis.filter((i) => i.done);
+  const sname = STORE_NAME[UI.store];
+  if (left.length) {
+    h += '<div class="go"><div class="c"><small>Mai ai de luat de la ' + esc(sname) + '</small><b>' + (left.length === 1 ? '1 produs' : left.length + ' produse') + '</b></div>' +
+      '<button data-a="plec">Plec la ' + esc(sname) + '</button></div>';
+  }
+
+  const inList = new Set(S.items.filter((i) => !i.done).map((i) => norm(i.name)));
+  let fav = Object.keys(UI.freq).sort((a, b) => UI.freq[b] - UI.freq[a]);
+  const base = UI.store === 'dm' ? ['Pastă de dinți', 'Șampon', 'Gel de duș', 'Detergent de vase', 'Hârtie igienică', 'Șervețele umede'] : ['Pâine', 'Lapte', 'Ouă', 'Roșii', 'Banane', 'Iaurt', 'Cartofi', 'Ceapă galbenă'];
+  for (const b of base) if (!fav.includes(b)) fav.push(b);
+  fav = fav.filter((n) => !inList.has(norm(n))).slice(0, 6);
+  if (fav.length) {
+    h += '<p class="lbl">Luate des</p><div class="chips">' + fav.map((n) => '<button class="chip" data-a="quick" data-v="' + esc(n) + '">+ ' + esc(n) + '</button>').join('') + '</div>';
+  }
+
+  if (!left.length && !done.length) {
+    h += '<div class="empty"><b>Lista e goală</b>Scrie jos ce mai trebuie, de exemplu „ouă” sau „detergent”, și apare aici.</div>';
+  }
+  for (const c of CATS) {
+    const its = left.filter((i) => (CAT[i.cat] ? i.cat : 'alt') === c.id).sort((a, b) => a.name.localeCompare(b.name, 'ro'));
+    if (!its.length) continue;
+    h += '<section class="group"><div class="gh"><span class="emo s" style="background:' + c.bg + '" aria-hidden="true">' + CAT_EMO[c.id] + '</span><h2>' + esc(c.name) + '</h2><span class="n">' + its.length + '</span></div>';
+    for (const it of its) {
+      h += '<div class="row"><button class="tick" data-a="tick" data-v="' + esc(it.id) + '" aria-label="Bifează ' + esc(it.name) + '"><span></span></button>' +
+        '<button class="rbody" data-a="edit" data-v="' + esc(it.id) + '" aria-label="Modifică ' + esc(it.name) + '">' + thumb(it) + '<span class="rtext" style="margin-left:4px"><span class="rname">' + esc(it.name) + '</span>' +
+        (it.note ? '<span class="rnote">' + esc(it.note) + '</span>' : '') + '</span><span class="rqty">' + esc(fmtQty(it.qty, it.unit)) + '</span>' +
+        (it.who ? '<span class="who" title="Pus de ' + esc(PNAME[it.who] || it.who) + '">' + esc(it.who) + '</span>' : '') + '</button></div>';
+    }
+    h += '</section>';
+  }
+  if (done.length) {
+    h += '<div class="cart"><p class="lbl" style="margin-left:0">În coș</p>';
+    for (const it of done) {
+      h += '<div class="row"><button class="tick done" data-a="tick" data-v="' + esc(it.id) + '" aria-label="Scoate bifa de la ' + esc(it.name) + '"><span>' + CHECK + '</span></button>' +
+        '<span class="rname" style="flex:1">' + esc(it.name) + '</span><span class="rqty">' + esc(fmtQty(it.qty, it.unit)) + '</span></div>';
+    }
+    h += '<button class="linkbtn" data-a="clear">Am terminat, golește coșul</button></div>';
+  }
+  return h;
+}
+
+function weekDays() {
+  const m = addDays(mondayOf(new Date()), UI.week * 7);
+  return [0, 1, 2, 3, 4, 5, 6].map((i) => addDays(m, i));
+}
+function menuOf(key) { return S.menu.find((m) => m.id === key); }
+function viewMenu() {
+  const days = weekDays();
+  const a = days[0], b = days[6];
+  const sm = (i) => LUNI[i].slice(0, 3);
+  const range = a.getMonth() === b.getMonth() ? a.getDate() + ' – ' + b.getDate() + ' ' + sm(b.getMonth()) : a.getDate() + ' ' + sm(a.getMonth()) + ' – ' + b.getDate() + ' ' + sm(b.getMonth());
+  const wname = UI.week === 0 ? 'Săpt. asta' : UI.week === 1 ? 'Săpt. viitoare' : UI.week === -1 ? 'Săpt. trecută' : 'Săpt.';
+  let h = '<div class="top"><div class="t"><p class="date"><span>' + wname + ', ' + esc(range) + '</span>' + syncLabel() + '</p><h1>Ce gătim</h1></div>' +
+    '<div class="arrows"><button class="arr" data-a="wk" data-v="-1" aria-label="Săptămâna dinainte"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
+    '<button class="arr" data-a="wk" data-v="1" aria-label="Săptămâna următoare"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div></div>';
+  const todayKey = ymd(new Date());
+  h += '<div class="week">' + days.map((d) => {
+    const k = ymd(d), m = menuOf(k);
+    return '<button class="wd' + (k === todayKey ? ' today' : '') + '" data-a="day" data-v="' + k + '" aria-label="' + ZILE[d.getDay()] + ' ' + d.getDate() + '"><small>' + ZSCURT[d.getDay()] + '</small><b>' + d.getDate() + '</b>' + (m && m.dish ? '<i></i>' : '') + '</button>';
+  }).join('') + '</div>';
+  for (const d of days) {
+    const k = ymd(d), m = menuOf(k);
+    const now = k === todayKey ? ' now' : '';
+    if (m && m.dish) {
+      const n = (m.ingr || []).length;
+      h += '<button class="day' + now + '" data-a="day" data-v="' + k + '"><span class="dd"><small>' + ZILE[d.getDay()].slice(0, 3) + '</small><b>' + d.getDate() + '</b></span>' +
+        '<span class="dt"><b>' + esc(m.dish) + '</b><small>' + (n ? (n === 1 ? '1 ingredient' : n + ' ingrediente') : 'fără ingrediente încă') + '</small></span>' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A3AAA4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>';
+    } else {
+      h += '<button class="day e' + now + '" data-a="day" data-v="' + k + '"><span class="dd"><small>' + ZILE[d.getDay()].slice(0, 3) + '</small><b>' + d.getDate() + '</b></span><span class="dt">+ Pune o mâncare</span></button>';
+    }
+  }
+  h += '<p class="lbl" style="margin-top:14px">De făcut curând</p>';
+  if (S.queue.length) {
+    h += '<div class="chips">' + S.queue.slice().sort((x, y) => (x.at || 0) - (y.at || 0)).map((q) => '<button class="chip soft" data-a="qpick" data-v="' + esc(q.id) + '">' + esc(q.name) + '</button>').join('') + '</div>';
+  } else {
+    h += '<p class="hint">Scrie jos o mâncare pe care vreți s-o faceți zilele astea, fără să-i alegeți încă ziua.</p>';
+  }
+  const total = days.reduce((n, d) => { const m = menuOf(ymd(d)); return n + (m && m.ingr ? m.ingr.length : 0); }, 0);
+  h += '<button class="big" data-a="send"' + (total ? '' : ' disabled') + '>Trimite ingredientele în listă</button>';
+  return h;
+}
+
+/* ---------- foaia de jos ---------- */
+let sheetOpen = false, sheetCtx = null;
+function openSheet(html, ctx) {
+  sheetCtx = ctx || null; sheetOpen = true;
+  $('#sheetin').innerHTML = '<div class="grab"></div>' + html;
+  const v = $('#veil'), s = $('#sheet');
+  v.hidden = false; s.hidden = false; hideSugg();
+  requestAnimationFrame(() => { v.classList.add('show'); s.classList.add('show'); });
+}
+function closeSheet() {
+  sheetOpen = false; sheetCtx = null;
+  const v = $('#veil'), s = $('#sheet');
+  v.classList.remove('show'); s.classList.remove('show');
+  setTimeout(() => { if (!sheetOpen) { v.hidden = true; s.hidden = true; } }, 260);
+  if (!UI.me && !needKey) setTimeout(askWho, 300);
+}
+$('#veil').addEventListener('click', () => { if (UI.me && !needKey) closeSheet(); });
+
+function askWho() {
+  if (sheetOpen) return;
+  openSheet('<h3>Cine ești?</h3><p class="sub">Ca să știe ceilalți cine a pus fiecare produs în listă. Se poate schimba oricând din butonul rotund de sus.</p><div class="people">' +
+    PEOPLE.map((p) => '<button class="person" data-a="setme" data-v="' + p.id + '"><i>' + p.id + '</i>' + p.name + '</button>').join('') + '</div>');
+}
+
+function editSheet(id) {
+  const it = S.items.find((i) => i.id === id); if (!it) return;
+  const ctx = { id: id, qty: it.qty, unit: it.unit, store: it.store };
+  const segs = [['any', 'Oricare'], ['lidl', 'Lidl'], ['kaufland', 'Kaufland'], ['dm', 'DM']];
+  const ph = photoOf(it); const cc = CAT[it.cat] || CAT.alt;
+  openSheet('<h3>' + esc(it.name) + '</h3><p class="sub">' + (it.who ? 'Pus de ' + esc(PNAME[it.who] || it.who) : 'Produs din listă') + '</p>' +
+    '<div class="photo">' + (ph ? '<img src="' + esc(ph) + '" alt="Poza cu ' + esc(it.name) + '">' : '<span class="ph-empty" style="background:' + cc.bg + '" aria-hidden="true">' + emojiFor(it.name, it.cat) + '</span>') +
+    '<div><label><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>' + (ph ? 'Schimbă poza' : 'Pune o poză') + '<input type="file" accept="image/*" id="pfile"></label>' +
+    '<small>Fă o poză la produs sau alege una din galerie. O vede toată lumea și rămâne și data viitoare.</small></div></div>' +
+    '<div class="field"><span>Cât</span><div class="step"><button data-a="qminus" aria-label="Mai puțin">−</button><b id="eq">' + esc(fmtQty(it.qty, it.unit)) + '</b><button data-a="qplus" aria-label="Mai mult">+</button></div></div>' +
+    '<div class="field"><span>De unde</span><div class="seg" role="group" aria-label="Magazin">' + segs.map((s) => '<button data-a="eseg" data-v="' + s[0] + '" class="' + (it.store === s[0] ? 'on' : '') + '">' + s[1] + '</button>').join('') + '</div></div>' +
+    '<label class="field"><span>Notiță</span><input class="inp" id="enote" maxlength="80" placeholder="de exemplu, cel la sticlă sau marca anume" value="' + esc(it.note || '') + '"></label>' +
+    '<div class="acts"><button class="btn-d" data-a="edel">Șterge</button><button class="btn-p" data-a="esave">Gata</button></div>', ctx);
+  $('#pfile').addEventListener('change', (e) => { const f = e.target.files && e.target.files[0]; if (f) uploadPhoto(f, it); });
+}
+function shrink(file) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file); const img = new Image();
+    img.onload = () => {
+      const max = 900, k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      c.toBlob((b) => b ? res(b) : rej(new Error('blob')), 'image/jpeg', 0.82);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('img')); };
+    img.src = url;
+  });
+}
+async function uploadPhoto(file, it) {
+  if (!GH.token) { toast('Pozele merg după ce pui cheia familiei'); return; }
+  toast('Urc poza…');
+  try {
+    const blob = await shrink(file);
+    const path = 'poze/' + slug(it.name) + '-' + rid() + '.jpg';
+    const b64 = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1]); fr.onerror = rej; fr.readAsDataURL(blob); });
+    const up = await gh('/contents/' + path, { method: 'PUT', body: JSON.stringify({ message: 'Poză: ' + it.name, content: b64, branch: GH.branch }) });
+    if (!up.ok) throw up;
+    BLOBS['gh:' + path] = URL.createObjectURL(blob);
+    const src = 'gh:' + path;
+    await Store.set('photos', slug(it.name), { name: it.name, photo: src, path: path, who: UI.me || '', at: Date.now() });
+    const cur = S.items.find((i) => i.id === it.id);
+    if (cur) await Store.set('items', cur.id, Object.assign(strip(cur), { photo: src }));
+    if (sheetOpen && sheetCtx && sheetCtx.id === it.id) { const box = document.querySelector('.photo'); if (box) { const im = box.querySelector('img, .ph-empty'); const n = document.createElement('img'); n.src = photoSrc(src); n.alt = 'Poza cu ' + it.name; im.replaceWith(n); } }
+    toast('Gata, are poză');
+  } catch (e) { toast('Nu am putut urca poza, mai încearcă'); }
+}
+
+function dayDate(key) { const [y, m, d] = key.split('-').map(Number); return new Date(y, m - 1, d); }
+function daySheet(key) {
+  const m = menuOf(key) || {};
+  const d = dayDate(key);
+  const ctx = { key: key, dish: m.dish || '', ingr: (m.ingr || []).map((x) => Object.assign({}, x)) };
+  openSheet('<h3>' + ZILE[d.getDay()] + ', ' + d.getDate() + ' ' + LUNI[d.getMonth()] + '</h3><p class="sub">Ce gătiți în ziua asta</p>' +
+    '<label class="field"><span>Mâncarea</span><input class="inp" id="dish" maxlength="60" placeholder="de exemplu, ciorbă de perișoare" value="' + esc(ctx.dish) + '" autocomplete="off"></label>' +
+    '<div id="dsugg" class="chips" style="margin-top:-6px"></div>' +
+    (S.recipes.some((r) => r.id === slug(ctx.dish)) ? '<button class="chip soft" style="margin:-4px 0 16px" data-a="rec" data-v="' + esc(slug(ctx.dish)) + '">Vezi rețeta</button>' : '') +
+    '<div class="field"><span>Ingrediente</span><div id="ilist"></div><input class="inp" id="iadd" placeholder="Adaugă un ingredient" autocomplete="off"></div>' +
+    '<div id="isugg"></div>' +
+    '<div class="acts"><button class="btn-d" data-a="dclear">Golește ziua</button><button class="btn-p" data-a="dsave">Salvează</button></div>', ctx);
+  drawIngr(); drawDishSugg();
+  $('#dish').addEventListener('input', () => { sheetCtx.dish = $('#dish').value; drawDishSugg(); });
+  $('#iadd').addEventListener('input', drawIngrSugg);
+  $('#iadd').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); const v = $('#iadd').value.trim(); if (v) pushIngr(v); } });
+}
+function drawIngr() {
+  const c = sheetCtx; if (!c || !c.ingr) return;
+  $('#ilist').innerHTML = c.ingr.map((x, i) => '<div class="ingr">' + '<span class="nm">' + esc(x.name) + '</span><span class="q"><button data-a="iminus" data-v="' + i + '" aria-label="Mai puțin ' + esc(x.name) + '">−</button><span>' + esc(fmtQty(x.qty, x.unit)) + '</span><button data-a="iplus" data-v="' + i + '" aria-label="Mai mult ' + esc(x.name) + '">+</button></span><button class="x" data-a="idel" data-v="' + i + '" aria-label="Scoate ' + esc(x.name) + '">×</button></div>').join('') ||
+    '<p class="hint" style="margin:0 4px 8px">Pune ingredientele o singură dată. Data viitoare când alegi mâncarea asta, vin singure.</p>';
+}
+function drawDishSugg() {
+  const c = sheetCtx; const v = norm(c.dish);
+  const list = S.dishes.filter((d) => !v || (norm(d.name).includes(v) && norm(d.name) !== v)).slice(0, 6);
+  $('#dsugg').innerHTML = list.map((d) => '<button class="chip soft" data-a="dpick" data-v="' + esc(d.id) + '">' + esc(d.name) + '</button>').join('');
+}
+function drawIngrSugg() {
+  const v = norm($('#iadd').value);
+  if (!v) { $('#isugg').innerHTML = ''; return; }
+  const hits = searchCatalog(v, 5);
+  let h = '<div class="sbox" style="box-shadow:none;margin:-6px 0 14px">' + hits.map((x) => '<button class="sopt" data-a="ipick" data-v="' + esc(x.name) + '">' + thumb(x, true) + '<span class="nm">' + esc(x.name) + '</span><span class="un">' + esc(x.unit) + '</span></button>').join('');
+  if (!hits.some((x) => norm(x.name) === v)) h += '<button class="sopt" data-a="ipick" data-v="' + esc($('#iadd').value.trim()) + '">' + thumb({name: '', cat: 'alt'}, true) + '<span class="nm">Adaugă „' + esc($('#iadd').value.trim()) + '”</span></button>';
+  $('#isugg').innerHTML = h + '</div>';
+}
+function pushIngr(name) {
+  const k = findCat(name);
+  const ex = sheetCtx.ingr.find((x) => norm(x.name) === norm(name));
+  if (!ex) sheetCtx.ingr.push({ name: k ? k.name : name, qty: 1, unit: k ? k.unit : 'buc', cat: k ? k.cat : 'alt' });
+  $('#iadd').value = ''; $('#isugg').innerHTML = ''; drawIngr(); $('#iadd').focus();
+}
+
+function sendSheet() {
+  const days = weekDays();
+  const agg = {};
+  for (const d of days) {
+    const m = menuOf(ymd(d)); if (!m || !m.ingr) continue;
+    for (const x of m.ingr) {
+      const k = norm(x.name) + '|' + x.unit;
+      if (!agg[k]) agg[k] = { name: x.name, unit: x.unit, cat: x.cat || 'alt', qty: 0, on: true };
+      agg[k].qty += x.qty;
+    }
+  }
+  openChecklist(Object.values(agg));
+}
+function openChecklist(arr, sub) {
+  const list = arr.sort((a, b) => a.name.localeCompare(b.name, 'ro'));
+  const inList = new Set(S.items.filter((i) => !i.done).map((i) => norm(i.name)));
+  for (const x of list) if (inList.has(norm(x.name))) x.on = false;
+  openSheet('<h3>Ce lipsește?</h3><p class="sub">' + esc(sub || 'Atinge ce aveți deja în casă, ca să nu-l mai pun în listă.') + '</p><div id="slist"></div>' +
+    '<div class="acts"><button class="btn-s" data-a="close">Renunță</button><button class="btn-p" data-a="sgo" id="sgo">Pune în listă</button></div>', { list: list });
+  drawSend();
+}
+function drawSend() {
+  const l = sheetCtx.list;
+  $('#slist').innerHTML = l.map((x, i) => '<button class="check' + (x.on ? '' : ' off') + '" data-a="stog" data-v="' + i + '" aria-pressed="' + x.on + '">' +
+    '<span class="tick' + (x.on ? ' done' : '') + '" style="margin:0"><span>' + (x.on ? CHECK : '') + '</span></span><span class="nm">' + esc(x.name) + '</span><span class="q">' + (x.on ? esc(fmtQty(x.qty, x.unit)) : 'avem') + '</span></button>').join('');
+  const n = l.filter((x) => x.on).length;
+  $('#sgo').textContent = n ? 'Pune ' + (n === 1 ? '1 produs' : n + ' produse') + ' în listă' : 'Nimic de pus';
+  $('#sgo').disabled = !n;
+}
+
+function queueSheet(id) {
+  const q = S.queue.find((x) => x.id === id); if (!q) return;
+  const days = weekDays();
+  openSheet('<h3>' + esc(q.name) + '</h3><p class="sub">Pe ce zi o puneți?</p><div class="days7">' +
+    days.map((d) => '<button data-a="qday" data-v="' + ymd(d) + '">' + ZILE[d.getDay()] + ' ' + d.getDate() + '</button>').join('') + '</div>' +
+    '<div class="acts"><button class="btn-d" data-a="qdel">Scoate ideea</button><button class="btn-s" data-a="close">Mai târziu</button></div>', { id: id, name: q.name });
+}
+
+/* ---------- rețete ---------- */
+const STEP_UNITS2 = { kg: .5, l: .5 };
+function niceNum(x) {
+  if (x >= 10) return String(Math.round(x));
+  const r = Math.round(x * 4) / 4;
+  const whole = Math.floor(r), frac = r - whole;
+  const f = frac === .25 ? '¼' : frac === .5 ? '½' : frac === .75 ? '¾' : '';
+  return (whole ? String(whole) : (f ? '' : '0')) + f;
+}
+function scaleText(t, k) {
+  if (!t || k === 1) return t || '';
+  return String(t).replace(/(\d+(?:[.,]\d+)?)/g, (m) => niceNum(parseFloat(m.replace(',', '.')) * k));
+}
+function recHero(r, big) {
+  const cls = big ? 'rbig' : 'rhero';
+  if (r.photo && photoSrc(r.photo)) return '<img class="' + cls + '" src="' + esc(photoSrc(r.photo)) + '" alt="">';
+  return '<span class="' + cls + '" style="background:' + (r.bg || '#F2E6D5') + '" aria-hidden="true">' + esc(r.emoji || '🍲') + '</span>';
+}
+function viewRecipes() {
+  let h = '<div class="top"><div class="t"><p class="date"><span>' + (S.recipes.length === 1 ? '1 rețetă salvată' : S.recipes.length + ' rețete salvate') + '</span>' + syncLabel() + '</p><h1>Rețete</h1></div>' +
+    '<button class="me" data-a="who" aria-label="Schimbă persoana, acum ' + esc(PNAME[UI.me] || 'nimeni') + '">' + esc(UI.me || '?') + '</button></div>';
+  const list = S.recipes.filter((r) => !UI.rq || norm(r.name).includes(UI.rq) || (r.ingr || []).some((x) => norm(x.name).includes(UI.rq)))
+    .sort((a, b) => (b.at || 0) - (a.at || 0));
+  if (!S.recipes.length) {
+    h += '<div class="empty"><b>Nicio rețetă încă</b>Trimite-i lui Claude un link sau un clip cu o rețetă și o pune aici, scrisă frumos, cu ingredientele gata de pus în listă.</div>';
+  } else if (!list.length) {
+    h += '<div class="empty"><b>N-am găsit</b>Nicio rețetă nu se potrivește cu ce ai scris.</div>';
+  }
+  for (const r of list) {
+    const n = (r.ingr || []).length;
+    h += '<button class="rcard" data-a="rec" data-v="' + esc(r.id) + '">' + recHero(r) + '<span class="rt"><b>' + esc(r.name) + '</b><span class="meta">' +
+      (r.time ? '<span>' + esc(r.time) + '</span>' : '') + (r.servings ? '<span>' + esc(r.servingsText || (r.servings + ' porții')) + '</span>' : '') + '<span>' + n + ' ingrediente</span></span></span></button>';
+  }
+  h += '<p class="hint" style="margin-top:12px">Ai găsit o rețetă pe net sau pe TikTok? Trimite linkul lui Claude și ți-o pune aici.</p>';
+  return h;
+}
+function recipeSheet(id) {
+  const r = S.recipes.find((x) => x.id === id); if (!r) return;
+  const ctx = { id: id, serv: r.servings || 4 };
+  openSheet('<div id="rbody"></div>', ctx);
+  drawRecipe();
+}
+function drawRecipe() {
+  const c = sheetCtx; const r = S.recipes.find((x) => x.id === c.id); if (!r) return;
+  const k = r.servings ? c.serv / r.servings : 1;
+  let h = recHero(r, true) + '<h3>' + esc(r.name) + '</h3><div class="meta" style="margin-top:8px">' + (r.time ? '<span>' + esc(r.time) + '</span>' : '') + (r.region ? '<span>' + esc(r.region) + '</span>' : '') + '</div>';
+  if (r.intro) h += '<p class="intro">' + esc(r.intro) + '</p>';
+  h += '<div class="rbtns"><button class="btn-p" data-a="rlist">Pune în listă</button><button class="btn-s" style="border:1px solid var(--edge)" data-a="rmenu">Pune în meniu</button></div>';
+  h += '<p class="sec">Ingrediente</p>';
+  if (r.servings) h += '<div class="portii"><span>Pentru câte porții</span><button data-a="rminus" aria-label="Mai puține porții">−</button><b>' + c.serv + '</b><button data-a="rplus" aria-label="Mai multe porții">+</button></div>';
+  h += '<div class="ring">' + (r.ingr || []).map((x) => '<div class="ri">' + thumb(x, true) + '<span class="tx"><span>' + esc(x.name) + '</span>' + (x.note ? '<small>' + esc(x.note) + '</small>' : '') + '</span><span class="am">' + esc(scaleText(x.say, k)) + '</span></div>').join('') + '</div>';
+  if (r.serve && r.serve.length) h += '<p class="sec" style="font-size:17px">La servit</p><div class="ring">' + r.serve.map((x) => '<div class="ri">' + thumb(x, true) + '<span class="tx"><span>' + esc(x.name) + '</span></span><span class="am">' + esc(scaleText(x.say, k)) + '</span></div>').join('') + '</div>';
+  h += '<p class="sec">Cum se face</p><ol class="steps">' + (r.steps || []).map((s, i) => '<li><b>' + (i + 1) + '</b><div>' + (s.t ? '<strong>' + esc(s.t) + '</strong>' : '') + esc(s.d || s) + '</div></li>').join('') + '</ol>';
+  if (r.tips && r.tips.length) h += '<p class="sec">Sfaturi</p><div class="tips">' + r.tips.map((t) => '<p>' + esc(t) + '</p>').join('') + '</div>';
+  if (r.source && r.source.url) h += '<a class="src" href="' + esc(r.source.url) + '" target="_blank" rel="noopener">Rețeta originală: ' + esc(r.source.title || r.source.url) + ' ↗</a>';
+  $('#rbody').innerHTML = h;
+}
+function recShopList(r, k) {
+  return (r.ingr || []).concat(r.serve || []).filter((x) => x.qty).map((x) => {
+    const st = STEP_UNITS2[x.unit] || 1;
+    const q = Math.max(st, Math.ceil((x.qty * k) / st - 1e-9) * st);
+    return { name: x.name, unit: x.unit, cat: x.cat || 'alt', qty: Math.round(q * 100) / 100, on: !x.pantry };
+  });
+}
+
+/* ---------- căutare jos ---------- */
+function searchCatalog(v, n) {
+  const own = S.items.concat(S.dishes.flatMap((d) => d.ingr || [])).map((x) => ({ name: x.name, unit: x.unit, cat: x.cat || 'alt' }));
+  const all = CATALOG.concat(own.filter((o) => !CATALOG.some((c) => norm(c.name) === norm(o.name))));
+  const seen = new Set(); const starts = [], has = [];
+  for (const c of all) {
+    const k = norm(c.name); if (seen.has(k)) continue;
+    if (k.startsWith(v) || k.split(' ').some((w) => w.startsWith(v))) { starts.push(c); seen.add(k); }
+    else if (k.includes(v)) { has.push(c); seen.add(k); }
+  }
+  return starts.sort((a, b) => a.name.length - b.name.length).concat(has).slice(0, n);
+}
+function hideSugg() { $('#sugg').hidden = true; }
+function showSugg() {
+  const raw = $('#q').value.trim(); const v = norm(raw);
+  if (UI.tab === 'retete') { hideSugg(); if (UI.rq !== v) { UI.rq = v; render(); } return; }
+  if (!v || sheetOpen) { hideSugg(); return; }
+  let h = '';
+  if (UI.tab === 'lista') {
+    const hits = searchCatalog(v, 7);
+    h = hits.map((x) => '<button class="sopt" role="option" data-a="add" data-v="' + esc(x.name) + '">' + thumb(x, true) + '<span class="nm">' + esc(x.name) + '</span><span class="un">' + esc(x.unit) + '</span></button>').join('');
+    if (!hits.some((x) => norm(x.name) === v)) h += '<button class="sopt" role="option" data-a="add" data-v="' + esc(raw) + '">' + thumb({name: '', cat: 'alt'}, true) + '<span class="nm">Adaugă „' + esc(raw) + '”</span></button>';
+  } else {
+    const ds = S.dishes.filter((d) => norm(d.name).includes(v)).slice(0, 5);
+    h = ds.map((d) => '<button class="sopt" role="option" data-a="qadd" data-v="' + esc(d.name) + '"><span class="nm">' + esc(d.name) + '</span><span class="un">salvată</span></button>').join('');
+    if (!ds.some((d) => norm(d.name) === v)) h += '<button class="sopt" role="option" data-a="qadd" data-v="' + esc(raw) + '"><span class="nm">Pune „' + esc(raw) + '” la De făcut curând</span></button>';
+  }
+  $('#sbox').innerHTML = h; $('#sugg').hidden = false;
+}
+$('#q').addEventListener('input', showSugg);
+$('#q').addEventListener('focus', showSugg);
+$('#q').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); const first = $('#sbox').querySelector('.sopt'); if (first && !$('#sugg').hidden) first.click(); }
+  if (e.key === 'Escape') { $('#q').value = ''; hideSugg(); $('#q').blur(); }
+});
+document.addEventListener('pointerdown', (e) => { if (!e.target.closest('.sugg') && !e.target.closest('.search')) hideSugg(); });
+
+/* ---------- clicuri ---------- */
+const A = {
+  tab(v) { UI.tab = v; UI.rq = ''; try { history.replaceState(null, '', '#' + v); } catch (e) {} $('#q').value = ''; hideSugg(); render(); window.scrollTo(0, 0); },
+  store(v) { UI.store = v; ls.set('store', v); render(); },
+  who() { openSheet('<h3>Cine ești?</h3><p class="sub">Alege-te pe tine, ca să apară lângă ce pui în listă.</p><div class="people">' + PEOPLE.map((p) => '<button class="person" data-a="setme" data-v="' + p.id + '"><i>' + p.id + '</i>' + p.name + '</button>').join('') + '</div>' + (GH.token ? '<button class="linkbtn" style="margin-top:12px;color:var(--danger)" data-a="forget">Scoate cheia de pe telefonul ăsta</button>' : '')); },
+  forget() { ls.set('ghtoken', ''); location.reload(); },
+  async savekey() {
+    const k = ($('#gkey').value || '').trim();
+    if (k.length < 20) { toast('Cheia pare prea scurtă'); return; }
+    $('#gbtn').disabled = true; $('#gbtn').textContent = 'Verific…';
+    GH.token = k;
+    try {
+      const r = await gh('');
+      if (!r.ok) throw r;
+      const j = await r.json(); GH.branch = j.default_branch || 'main';
+      ls.set('ghtoken', k); ls.set('ghbranch', GH.branch);
+      needKey = false; closeSheet(); Store.startGH(); toast('Gata, ești conectat');
+    } catch (e) {
+      GH.token = ''; $('#gbtn').disabled = false; $('#gbtn').textContent = 'Intră';
+      toast(e && e.status === 401 ? 'Cheia nu e bună' : e && e.status === 404 ? 'Cheia nu are acces la ce-luam-date' : 'Nu m-am putut conecta, încearcă iar');
+    }
+  },
+  setme(v) { UI.me = v; ls.set('me', v); closeSheet(); render(); toast('Salut, ' + PNAME[v] + '!'); },
+  add(v) {
+    addItem(v);
+    $('#q').value = ''; hideSugg();
+    toast(v + (UI.store === 'dm' ? ' e pe lista de DM' : ' e pe listă'));
+  },
+  quick(v) { addItem(v); toast(v + ' e pe listă'); },
+  tick(v) {
+    const it = S.items.find((i) => i.id === v); if (!it) return;
+    if (navigator.vibrate) { try { navigator.vibrate(8); } catch (e) {} }
+    Store.set('items', it.id, Object.assign(strip(it), { done: !it.done, doneAt: Date.now() }));
+  },
+  edit(v) { editSheet(v); },
+  qminus() { const c = sheetCtx; const s = STEP_UNITS[c.unit] || 1; c.qty = Math.max(s, Math.round((c.qty - s) * 100) / 100); $('#eq').textContent = fmtQty(c.qty, c.unit); },
+  qplus() { const c = sheetCtx; const s = STEP_UNITS[c.unit] || 1; c.qty = Math.round((c.qty + s) * 100) / 100; $('#eq').textContent = fmtQty(c.qty, c.unit); },
+  eseg(v, el) { sheetCtx.store = v; el.parentNode.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b === el)); },
+  esave() {
+    const c = sheetCtx; const it = S.items.find((i) => i.id === c.id); if (!it) return closeSheet();
+    const note = $('#enote').value.trim();
+    Store.set('items', it.id, Object.assign(strip(it), { qty: c.qty, store: c.store, note: note }));
+    closeSheet();
+    if (c.store !== it.store) toast('Mutat la ' + STORE_NAME[c.store]);
+  },
+  edel() { const c = sheetCtx; Store.del('items', c.id); closeSheet(); toast('Șters din listă'); },
+  clear() {
+    const done = visibleItems().filter((i) => i.done);
+    done.forEach((i) => { bumpFreq(i.name); Store.del('items', i.id); });
+    toast('Coșul e gol');
+  },
+  plec() {
+    if (!UI.me) return askWho();
+    Store.set('meta', 'plecare', { who: UI.me, store: UI.store, at: Date.now() });
+    toast(Store.mode === 'remote' ? 'Ceilalți o să vadă în aplicație că ai plecat' : 'Notat. Când aplicația e comună, o să vadă și ceilalți');
+  },
+  wk(v) { UI.week += Number(v); render(); },
+  day(v) { daySheet(v); },
+  dpick(v) {
+    const d = S.dishes.find((x) => x.id === v); if (!d) return;
+    sheetCtx.dish = d.name; $('#dish').value = d.name;
+    if (!sheetCtx.ingr.length) sheetCtx.ingr = (d.ingr || []).map((x) => Object.assign({}, x));
+    drawIngr(); drawDishSugg();
+  },
+  ipick(v) { pushIngr(v); },
+  iminus(v) { const x = sheetCtx.ingr[v]; const s = STEP_UNITS[x.unit] || 1; x.qty = Math.max(s, Math.round((x.qty - s) * 100) / 100); drawIngr(); },
+  iplus(v) { const x = sheetCtx.ingr[v]; const s = STEP_UNITS[x.unit] || 1; x.qty = Math.round((x.qty + s) * 100) / 100; drawIngr(); },
+  idel(v) { sheetCtx.ingr.splice(Number(v), 1); drawIngr(); },
+  dsave() {
+    const c = sheetCtx; const dish = ($('#dish').value || '').trim();
+    if (!dish) { Store.del('menu', c.key); closeSheet(); return; }
+    Store.set('menu', c.key, { dish: dish, ingr: c.ingr, who: UI.me || '', at: Date.now() });
+    if (c.ingr.length || !S.dishes.some((d) => d.id === slug(dish))) Store.set('dishes', slug(dish), { name: dish, ingr: c.ingr });
+    closeSheet(); toast(dish + ' e în meniu');
+  },
+  dclear() { Store.del('menu', sheetCtx.key); closeSheet(); },
+  send() { sendSheet(); },
+  stog(v) { const x = sheetCtx.list[v]; x.on = !x.on; drawSend(); },
+  sgo() {
+    const l = sheetCtx.list.filter((x) => x.on);
+    l.forEach((x) => addItem(x.name, x.qty, x.unit, x.cat, { store: 'any' }));
+    closeSheet(); toast('Am pus ' + (l.length === 1 ? '1 produs' : l.length + ' produse') + ' în listă');
+  },
+  qadd(v) {
+    v = String(v).trim(); if (!v) return;
+    Store.set('queue', rid(), { name: v, at: Date.now() });
+    $('#q').value = ''; hideSugg(); toast(v + ' e la De făcut curând');
+  },
+  qpick(v) { queueSheet(v); },
+  qday(v) {
+    const c = sheetCtx; const saved = S.dishes.find((d) => d.id === slug(c.name));
+    Store.set('menu', v, { dish: c.name, ingr: saved ? saved.ingr || [] : [], who: UI.me || '', at: Date.now() });
+    Store.del('queue', c.id); closeSheet(); toast(c.name + ' e în meniu');
+  },
+  qdel() { Store.del('queue', sheetCtx.id); closeSheet(); },
+  rec(v) { if (sheetOpen) { sheetOpen = false; } recipeSheet(v); },
+  rplus() { sheetCtx.serv = Math.min(60, sheetCtx.serv + 1); drawRecipe(); },
+  rminus() { sheetCtx.serv = Math.max(1, sheetCtx.serv - 1); drawRecipe(); },
+  rlist() {
+    const r = S.recipes.find((x) => x.id === sheetCtx.id); if (!r) return;
+    const k = r.servings ? sheetCtx.serv / r.servings : 1;
+    const list = recShopList(r, k);
+    sheetOpen = false;
+    openChecklist(list, 'Pentru ' + sheetCtx.serv + ' porții. Atinge ce aveți deja în casă, sarea și condimentele sunt deja scoase.');
+  },
+  rmenu() {
+    const r = S.recipes.find((x) => x.id === sheetCtx.id); if (!r) return;
+    const k = r.servings ? sheetCtx.serv / r.servings : 1;
+    const base = new Date(); const days = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => addDays(base, i));
+    const ctx = { name: r.name, ingr: recShopList(r, k).map((x) => ({ name: x.name, qty: x.qty, unit: x.unit, cat: x.cat })) };
+    sheetOpen = false;
+    openSheet('<h3>' + esc(r.name) + '</h3><p class="sub">Pe ce zi o gătiți?</p><div class="days7">' +
+      days.map((d, i) => '<button data-a="rday" data-v="' + ymd(d) + '">' + (i === 0 ? 'Azi' : i === 1 ? 'Mâine' : ZILE[d.getDay()] + ' ' + d.getDate()) + '</button>').join('') + '</div>' +
+      '<div class="acts"><button class="btn-s" data-a="close">Renunță</button></div>', ctx);
+  },
+  rday(v) {
+    const c = sheetCtx;
+    Store.set('menu', v, { dish: c.name, ingr: c.ingr, who: UI.me || '', at: Date.now() });
+    if (!S.dishes.some((d) => d.id === slug(c.name))) Store.set('dishes', slug(c.name), { name: c.name, ingr: c.ingr });
+    closeSheet(); toast(c.name + ' e în meniu');
+  },
+  close() { closeSheet(); }
+};
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-a]'); if (!el) return;
+  const fn = A[el.dataset.a]; if (!fn) return;
+  e.preventDefault(); fn(el.dataset.v, el, e);
+});
+window.addEventListener('hashchange', () => { const t = ['#meniu', '#retete'].includes(location.hash) ? location.hash.slice(1) : 'lista'; if (t !== UI.tab) A.tab(t); });
+
+/* ---------- pornire ---------- */
+for (const c of COLS) S[c] = [];
+if (GH.token) { Store.startGH(); }
+else {
+  needKey = true; render();
+  openSheet('<h3>Cheia familiei</h3><p class="sub">Lipește aici cheia pe care ți-a dat-o Usk. O pui o singură dată pe telefonul ăsta și rămâne salvată.</p>' +
+    '<label class="field"><span>Cheia</span><input class="inp" id="gkey" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="github_pat_…"></label>' +
+    '<div class="acts"><button class="btn-p" id="gbtn" data-a="savekey">Intră</button></div>');
+}
+setInterval(() => { if (UI.tab === 'lista' && !sheetOpen && document.activeElement !== $('#q')) render(); }, 60000);
+})();
+</script>
+</body>
+</html>

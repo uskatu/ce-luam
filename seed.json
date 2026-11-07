@@ -1,0 +1,568 @@
+{
+ "items": {
+  "gulas01": {
+   "name": "Carne de vită",
+   "qty": 2.5,
+   "unit": "kg",
+   "cat": "car",
+   "store": "kaufland",
+   "note": "pentru gulaș: pulpă, rasol sau coaste",
+   "who": "U",
+   "done": false,
+   "at": 1794085400001
+  },
+  "gulas02": {
+   "name": "Kaizer",
+   "qty": 1,
+   "unit": "pachet",
+   "cat": "mez",
+   "store": "kaufland",
+   "note": "250 g, merge și bacon sau costiță afumată",
+   "who": "U",
+   "done": false,
+   "at": 1794085400002
+  },
+  "gulas03": {
+   "name": "Ceapă galbenă",
+   "qty": 1,
+   "unit": "kg",
+   "cat": "leg",
+   "store": "kaufland",
+   "note": "",
+   "who": "U",
+   "done": false,
+   "at": 1794085400003
+  },
+  "gulas04": {
+   "name": "Usturoi",
+   "qty": 2,
+   "unit": "căpățână",
+   "cat": "leg",
+   "store": "kaufland",
+   "note": "una mare sau două mici",
+   "who": "U",
+   "done": false,
+   "at": 1794085400004
+  },
+  "gulas05": {
+   "name": "Ardei kapia",
+   "qty": 6,
+   "unit": "buc",
+   "cat": "leg",
+   "store": "kaufland",
+   "note": "merg și gogoșari",
+   "who": "U",
+   "done": false,
+   "at": 1794085400005
+  },
+  "gulas06": {
+   "name": "Ardei iute",
+   "qty": 2,
+   "unit": "buc",
+   "cat": "leg",
+   "store": "kaufland",
+   "note": "",
+   "who": "U",
+   "done": false,
+   "at": 1794085400006
+  },
+  "gulas07": {
+   "name": "Roșii",
+   "qty": 1,
+   "unit": "kg",
+   "cat": "leg",
+   "store": "kaufland",
+   "note": "4-5 bucăți, bine coapte",
+   "who": "U",
+   "done": false,
+   "at": 1794085400007
+  },
+  "gulas08": {
+   "name": "Țelină apio",
+   "qty": 1,
+   "unit": "buc",
+   "cat": "leg",
+   "store": "kaufland",
+   "note": "îți trebuie 4 tulpini cu frunze",
+   "who": "U",
+   "done": false,
+   "at": 1794085400008
+  },
+  "gulas09": {
+   "name": "Cartofi",
+   "qty": 2.5,
+   "unit": "kg",
+   "cat": "leg",
+   "store": "kaufland",
+   "note": "",
+   "who": "U",
+   "done": false,
+   "at": 1794085400009
+  },
+  "gulas10": {
+   "name": "Pătrunjel verde",
+   "qty": 1,
+   "unit": "legătură",
+   "cat": "leg",
+   "store": "kaufland",
+   "note": "",
+   "who": "U",
+   "done": false,
+   "at": 1794085400010
+  },
+  "gulas11": {
+   "name": "Untură de porc",
+   "qty": 1,
+   "unit": "borcan",
+   "cat": "cam",
+   "store": "kaufland",
+   "note": "sau 100 ml ulei, dacă aveți",
+   "who": "U",
+   "done": false,
+   "at": 1794085400011
+  },
+  "gulas12": {
+   "name": "Pastă de tomate Mutti",
+   "qty": 1,
+   "unit": "tub",
+   "cat": "cam",
+   "store": "kaufland",
+   "note": "dublu concentrată, tubul de 130 g",
+   "who": "U",
+   "done": false,
+   "at": 1794085400012,
+   "photo": "poze/mutti.jpg"
+  },
+  "gulas13": {
+   "name": "Boia dulce",
+   "qty": 1,
+   "unit": "pungă",
+   "cat": "con",
+   "store": "kaufland",
+   "note": "",
+   "who": "U",
+   "done": false,
+   "at": 1794085400013
+  },
+  "gulas14": {
+   "name": "Chimen",
+   "qty": 1,
+   "unit": "plic",
+   "cat": "con",
+   "store": "kaufland",
+   "note": "semințe",
+   "who": "U",
+   "done": false,
+   "at": 1794085400014
+  },
+  "gulas15": {
+   "name": "Foi de dafin",
+   "qty": 1,
+   "unit": "plic",
+   "cat": "con",
+   "store": "kaufland",
+   "note": "dacă nu mai aveți",
+   "who": "U",
+   "done": false,
+   "at": 1794085400015
+  },
+  "gulas16": {
+   "name": "Piper",
+   "qty": 1,
+   "unit": "pungă",
+   "cat": "con",
+   "store": "kaufland",
+   "note": "dacă nu mai aveți",
+   "who": "U",
+   "done": false,
+   "at": 1794085400016
+  },
+  "gulas17": {
+   "name": "Smântână",
+   "qty": 1,
+   "unit": "cutie",
+   "cat": "lac",
+   "store": "kaufland",
+   "note": "groasă, pentru servit",
+   "who": "U",
+   "done": false,
+   "at": 1794085400017
+  },
+  "gulas18": {
+   "name": "Pâine",
+   "qty": 1,
+   "unit": "buc",
+   "cat": "pan",
+   "store": "kaufland",
+   "note": "",
+   "who": "U",
+   "done": false,
+   "at": 1794085400018
+  },
+  "gulas19": {
+   "name": "Boia afumată iute La Chinata",
+   "qty": 1,
+   "unit": "cutie",
+   "cat": "con",
+   "store": "kaufland",
+   "note": "cutia de 750 g",
+   "who": "U",
+   "done": false,
+   "at": 1794085400019,
+   "photo": "poze/lachinata.jpg"
+  },
+  "mw6v81er8iwisa": {
+   "name": "Periuță de dinți",
+   "qty": 1,
+   "unit": "buc",
+   "cat": "igi",
+   "store": "dm",
+   "note": "",
+   "who": "U",
+   "done": false,
+   "at": 1794083885091
+  }
+ },
+ "recipes": {
+  "gulas-de-vita-cu-cartofi": {
+   "name": "Gulaș de vită cu cartofi",
+   "emoji": "🍲",
+   "bg": "#F4E1D9",
+   "time": "3 h 30 min",
+   "region": "Ardelenească, la ceaun",
+   "servings": 16,
+   "servingsText": "15-20 porții",
+   "intro": "Gulaș gros, cu multă ceapă și boia, făcut încet la ceaun până se înmoaie carnea. Cantitățile de mai jos sunt pentru un ceaun de 11 litri, așa că pentru acasă scazi porțiile de mai sus și se recalculează tot.",
+   "ingr": [
+    {
+     "name": "Carne de vită",
+     "say": "2,5 kg",
+     "note": "pulpă, rasol sau coaste, cu os cu măduvă",
+     "qty": 2.5,
+     "unit": "kg",
+     "cat": "car"
+    },
+    {
+     "name": "Kaizer",
+     "say": "250 g",
+     "note": "merge și bacon, costiță sau slănină afumată",
+     "qty": 1,
+     "unit": "pachet",
+     "cat": "mez"
+    },
+    {
+     "name": "Ceapă galbenă",
+     "say": "1 kg",
+     "qty": 1,
+     "unit": "kg",
+     "cat": "leg"
+    },
+    {
+     "name": "Usturoi",
+     "say": "1 căpățână mare",
+     "qty": 1,
+     "unit": "căpățână",
+     "cat": "leg"
+    },
+    {
+     "name": "Untură de porc",
+     "say": "1 lingură",
+     "note": "sau 100 ml ulei",
+     "qty": 1,
+     "unit": "borcan",
+     "cat": "cam",
+     "pantry": true
+    },
+    {
+     "name": "Ardei kapia",
+     "say": "6 buc",
+     "note": "sau gogoșari",
+     "qty": 6,
+     "unit": "buc",
+     "cat": "leg"
+    },
+    {
+     "name": "Ardei iute",
+     "say": "1-2 buc",
+     "qty": 2,
+     "unit": "buc",
+     "cat": "leg"
+    },
+    {
+     "name": "Roșii",
+     "say": "4-5 buc",
+     "note": "bine coapte",
+     "qty": 1,
+     "unit": "kg",
+     "cat": "leg"
+    },
+    {
+     "name": "Țelină apio",
+     "say": "4 tulpini",
+     "note": "cu frunze cu tot",
+     "qty": 1,
+     "unit": "buc",
+     "cat": "leg"
+    },
+    {
+     "name": "Chimen",
+     "say": "1 lingură",
+     "note": "semințe",
+     "qty": 1,
+     "unit": "plic",
+     "cat": "con",
+     "pantry": true
+    },
+    {
+     "name": "Boia dulce",
+     "say": "4-5 linguri",
+     "qty": 1,
+     "unit": "pungă",
+     "cat": "con",
+     "pantry": true
+    },
+    {
+     "name": "Boia afumată iute La Chinata",
+     "say": "1 lingură",
+     "note": "opțional, pentru gust de afumat",
+     "qty": 1,
+     "unit": "cutie",
+     "cat": "con",
+     "pantry": true,
+     "photo": "poze/lachinata.jpg"
+    },
+    {
+     "name": "Pastă de tomate Mutti",
+     "say": "2 linguri",
+     "note": "dublu concentrată",
+     "qty": 1,
+     "unit": "tub",
+     "cat": "cam",
+     "photo": "poze/mutti.jpg"
+    },
+    {
+     "name": "Sare",
+     "say": "4-5 lingurițe",
+     "cat": "cam"
+    },
+    {
+     "name": "Piper",
+     "say": "2 lingurițe",
+     "cat": "con"
+    },
+    {
+     "name": "Foi de dafin",
+     "say": "2 foi",
+     "note": "opțional",
+     "cat": "con"
+    },
+    {
+     "name": "Cartofi",
+     "say": "2,5 kg",
+     "qty": 2.5,
+     "unit": "kg",
+     "cat": "leg"
+    }
+   ],
+   "serve": [
+    {
+     "name": "Pătrunjel verde",
+     "say": "1 legătură",
+     "qty": 1,
+     "unit": "legătură",
+     "cat": "leg"
+    },
+    {
+     "name": "Smântână",
+     "say": "după gust",
+     "qty": 1,
+     "unit": "cutie",
+     "cat": "lac"
+    },
+    {
+     "name": "Pâine",
+     "say": "proaspătă",
+     "qty": 1,
+     "unit": "buc",
+     "cat": "pan"
+    }
+   ],
+   "steps": [
+    {
+     "t": "Pregătește tot dinainte",
+     "d": "Tai carnea în cuburi mari și păstrezi oasele cu măduvă. Toci ceapa, ardeii, roșiile, țelina și usturoiul, fiecare în bolul lui, că intră pe rând. Cartofii îi cureți, îi tai cuburi și îi ții în apă rece până la final."
+    },
+    {
+     "t": "Untura și kaizerul",
+     "d": "Încălzești ceaunul gol, pui untura și kaizerul tăiat mărunt și le lași să sfârâie un pic."
+    },
+    {
+     "t": "Ceapa cu chimen",
+     "d": "Bagi ceapa, chimenul și un praf de sare și le călești 8-10 minute, amestecând din când în când."
+    },
+    {
+     "t": "Usturoiul",
+     "d": "Adaugi usturoiul și amesteci repede, fără să-l lași să se ardă."
+    },
+    {
+     "t": "Carnea și boiaua",
+     "d": "Pui carnea și o călești cam 10 minute. Abia acum vin sarea, piperul și boiaua, peste carne. Pusă direct în grăsimea fierbinte, boiaua se amărăște."
+    },
+    {
+     "t": "Ardeii și țelina",
+     "d": "Adaugi ardeii, ardeiul iute și țelina și le mai lași vreo 5 minute."
+    },
+    {
+     "t": "Roșiile",
+     "d": "Pui pasta de tomate și roșiile tăiate și amesteci bine."
+    },
+    {
+     "t": "Apa",
+     "d": "Torni cam 3 litri de apă caldă. La început pare prea zeamă, dar scade pe parcurs."
+    },
+    {
+     "t": "Fierbe încet",
+     "d": "Lași ceaunul pe foc mic, fără capac, cam 3 ore, și mai amesteci din când în când. Carnea trebuie să fie moale, dar nu complet gata, că mai stă cu cartofii."
+    },
+    {
+     "t": "Cartofii",
+     "d": "Scurgi cartofii și îi bagi în ceaun pentru încă 30-40 de minute. Ei îngroașă sosul, iar dacă se îngroașă prea tare mai pui până la jumătate de litru de apă caldă."
+    },
+    {
+     "t": "Gustă și servește",
+     "d": "Mai potrivești de sare și piper, presari pătrunjel tocat și îl dai la masă cu smântână și pâine proaspătă."
+    }
+   ],
+   "tips": [
+    "Ia bucăți ieftine, cu puțină grăsime și zgârciuri, gen pulpă sau rasol. Dau gust și leagă sosul.",
+    "Ceapa multă nu e greșeală, îndulcește gulașul și îl face gros.",
+    "Fierbe-l fără capac, ca să scadă zeama.",
+    "A doua zi e și mai bun. Ține în frigider sau îl poți congela în porții."
+   ],
+   "source": {
+    "title": "Savori Urbane",
+    "url": "https://savoriurbane.com/gulas-de-vita-cu-cartofi-la-ceaun-reteta-ardeleneasca/"
+   },
+   "at": 1794085800000
+  }
+ },
+ "dishes": {
+  "gulas-de-vita-cu-cartofi": {
+   "name": "Gulaș de vită cu cartofi",
+   "ingr": [
+    {
+     "name": "Carne de vită",
+     "qty": 2.5,
+     "unit": "kg",
+     "cat": "car"
+    },
+    {
+     "name": "Kaizer",
+     "qty": 1,
+     "unit": "pachet",
+     "cat": "mez"
+    },
+    {
+     "name": "Ceapă galbenă",
+     "qty": 1,
+     "unit": "kg",
+     "cat": "leg"
+    },
+    {
+     "name": "Usturoi",
+     "qty": 1,
+     "unit": "căpățână",
+     "cat": "leg"
+    },
+    {
+     "name": "Untură de porc",
+     "qty": 1,
+     "unit": "borcan",
+     "cat": "cam"
+    },
+    {
+     "name": "Ardei kapia",
+     "qty": 6,
+     "unit": "buc",
+     "cat": "leg"
+    },
+    {
+     "name": "Ardei iute",
+     "qty": 2,
+     "unit": "buc",
+     "cat": "leg"
+    },
+    {
+     "name": "Roșii",
+     "qty": 1,
+     "unit": "kg",
+     "cat": "leg"
+    },
+    {
+     "name": "Țelină apio",
+     "qty": 1,
+     "unit": "buc",
+     "cat": "leg"
+    },
+    {
+     "name": "Chimen",
+     "qty": 1,
+     "unit": "plic",
+     "cat": "con"
+    },
+    {
+     "name": "Boia dulce",
+     "qty": 1,
+     "unit": "pungă",
+     "cat": "con"
+    },
+    {
+     "name": "Boia afumată iute La Chinata",
+     "qty": 1,
+     "unit": "cutie",
+     "cat": "con"
+    },
+    {
+     "name": "Pastă de tomate Mutti",
+     "qty": 1,
+     "unit": "tub",
+     "cat": "cam"
+    },
+    {
+     "name": "Cartofi",
+     "qty": 2.5,
+     "unit": "kg",
+     "cat": "leg"
+    },
+    {
+     "name": "Pătrunjel verde",
+     "qty": 1,
+     "unit": "legătură",
+     "cat": "leg"
+    },
+    {
+     "name": "Smântână",
+     "qty": 1,
+     "unit": "cutie",
+     "cat": "lac"
+    },
+    {
+     "name": "Pâine",
+     "qty": 1,
+     "unit": "buc",
+     "cat": "pan"
+    }
+   ]
+  }
+ },
+ "photos": {
+  "pasta-de-tomate-mutti": {
+   "name": "Pastă de tomate Mutti",
+   "photo": "poze/mutti.jpg"
+  },
+  "boia-afumata-iute-la-chinata": {
+   "name": "Boia afumată iute La Chinata",
+   "photo": "poze/lachinata.jpg"
+  }
+ }
+}
